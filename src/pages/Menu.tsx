@@ -202,6 +202,11 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
 
   const total = cart.reduce((acc, curr) => acc + curr.item.price * curr.quantity, 0);
 
+  const getItemQuantity = (id: number) => {
+    const item = cart.find(i => i.item.id === id);
+    return item ? item.quantity : 0;
+  };
+
   return (
     <div style={{ minHeight: '80vh', padding: 'var(--spacing-xl) 0' }}>
       <div className="container">
@@ -262,8 +267,6 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                 key={cat}
                 onClick={() => {
                   setActiveCategory(cat);
-                  // Optional: clear search when picking a category, or keep it?
-                  // Keeping it is usually better for UX.
                 }}
                 style={{
                   padding: '6px 16px',
@@ -312,56 +315,111 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                 gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
                 gap: 'var(--spacing-md)' 
               }}>
-                {group.items.map(item => (
-                  <div key={item.id} style={{
-                    backgroundColor: 'white',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(0,0,0,0.05)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    overflow: 'hidden',
-                    transition: 'var(--transition)',
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.02)'
-                  }} className="menu-item-card">
-                    {/* Item Image */}
-                    <div style={{ height: '200px', width: '100%', overflow: 'hidden', backgroundColor: '#f5f5f5' }}>
-                      {item.image ? (
-                        <img 
-                          src={item.image} 
-                          alt={item.name} 
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
-                      ) : (
-                        <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc' }}>
-                          <ShoppingBag size={48} opacity={0.2} />
-                        </div>
-                      )}
-                    </div>
-
-                    <div style={{ padding: 'var(--spacing-md)', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                          <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>
-                            {language === 'en' && item.nameEn ? item.nameEn : item.name}
-                          </h3>
-                          <span style={{ fontWeight: 800, color: 'var(--color-primary)', fontSize: '1.1rem', whiteSpace: 'nowrap', marginLeft: '10px' }}>
-                            {item.price} lei
-                          </span>
-                        </div>
-                        <p style={{ fontSize: '0.9rem', color: 'var(--color-text-light)', marginBottom: 'var(--spacing-sm)', lineHeight: '1.4' }}>
-                          {language === 'en' && item.descriptionEn ? item.descriptionEn : item.description}
-                        </p>
+                {group.items.map(item => {
+                  const quantity = getItemQuantity(item.id);
+                  return (
+                    <div key={item.id} style={{
+                      backgroundColor: 'white',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(0,0,0,0.05)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      overflow: 'hidden',
+                      transition: 'var(--transition)',
+                      boxShadow: '0 4px 6px rgba(0,0,0,0.02)'
+                    }} className="menu-item-card">
+                      {/* Item Image */}
+                      <div style={{ height: '200px', width: '100%', overflow: 'hidden', backgroundColor: '#f5f5f5' }}>
+                        {item.image ? (
+                          <img 
+                            src={item.image} 
+                            alt={item.name} 
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                        ) : (
+                          <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc' }}>
+                            <ShoppingBag size={48} opacity={0.2} />
+                          </div>
+                        )}
                       </div>
-                      <button 
-                        onClick={() => addToCart(item)}
-                        className="btn-primary" 
-                        style={{ width: '100%', padding: '12px', fontSize: '0.85rem', fontWeight: 700, marginTop: '10px' }}
-                      >
-                        {t('menu.add_to_cart')}
-                      </button>
+
+                      <div style={{ padding: 'var(--spacing-md)', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                        <div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                            <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>
+                              {language === 'en' && item.nameEn ? item.nameEn : item.name}
+                            </h3>
+                            <span style={{ fontWeight: 800, color: 'var(--color-primary)', fontSize: '1.1rem', whiteSpace: 'nowrap', marginLeft: '10px' }}>
+                              {item.price} lei
+                            </span>
+                          </div>
+                          <p style={{ fontSize: '0.9rem', color: 'var(--color-text-light)', marginBottom: 'var(--spacing-sm)', lineHeight: '1.4' }}>
+                            {language === 'en' && item.descriptionEn ? item.descriptionEn : item.description}
+                          </p>
+                        </div>
+                        
+                        {quantity === 0 ? (
+                          <button 
+                            onClick={() => addToCart(item)}
+                            className="btn-primary" 
+                            style={{ width: '100%', padding: '12px', fontSize: '0.85rem', fontWeight: 700, marginTop: '10px' }}
+                          >
+                            {t('menu.add_to_cart')}
+                          </button>
+                        ) : (
+                          <div style={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            gap: '20px',
+                            marginTop: '10px',
+                            backgroundColor: 'var(--color-primary)',
+                            borderRadius: '30px',
+                            padding: '8px'
+                          }}>
+                            <button 
+                              onClick={() => removeFromCart(item.id)}
+                              style={{ 
+                                background: 'white', 
+                                border: 'none', 
+                                borderRadius: '50%', 
+                                width: '28px', 
+                                height: '28px', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                color: 'var(--color-primary)',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <Minus size={18} />
+                            </button>
+                            <span style={{ color: 'white', fontWeight: 800, fontSize: '1.1rem', minWidth: '20px', textAlign: 'center' }}>
+                              {quantity}
+                            </span>
+                            <button 
+                              onClick={() => addToCart(item)}
+                              style={{ 
+                                background: 'white', 
+                                border: 'none', 
+                                borderRadius: '50%', 
+                                width: '28px', 
+                                height: '28px', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                color: 'var(--color-primary)',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <Plus size={18} />
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))
