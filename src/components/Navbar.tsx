@@ -37,7 +37,7 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
           }}
         >
           <img 
-            src="/images/logo.png" 
+            src="images/logo.png" 
             alt="La Misca Logo" 
             style={{ 
               height: '100px', 

@@ -61,7 +61,7 @@ export default function FeatureSections() {
         subtitle={t('cat.grill')}
         title={language === 'ro' ? "Foc, Fum și Suflet" : "Fire, Smoke, & Soul"}
         description={language === 'ro' ? "Meșteșugul nostru începe cu flacăra. Bucăți de carne premium, condimentate simplu și fripte la perfecțiune pe jar încins. Un gust al tradiției în fiecare mușcătură." : "Our craft begins with the flame. Prime cuts of meat, seasoned with simplicity and grilled to perfection over open embers. A taste of tradition in every bite."}
-        image="/images/Ceafa La Misca_converted.webp"
+        image="images/Ceafa La Misca_converted.webp"
       />
       
       <FeatureRow 
@@ -76,7 +76,7 @@ export default function FeatureSections() {
         subtitle={language === 'ro' ? "RĂDĂCINI ROMÂNEȘTI" : "ROMANIAN ROOTS"}
         title={language === 'ro' ? "Tradiție, Reinterpretată" : "Tradition, Reimagined"}
         description={language === 'ro' ? "Savoarea gustului de acasă. De la mezeluri artizanale la tocănițe gătite lent, celebrăm moștenirea culinară românească cu o notă modernă și de înaltă calitate." : "Savor the flavors of home. From artisanal cold cuts to slow-cooked stews, we celebrate Romanian culinary heritage with a modern, high-quality touch."}
-        image="/images/Muschi Vita Gorgonzola_converted.webp"
+        image="images/Muschi Vita Gorgonzola_converted.webp"
       />
     </section>
   );
