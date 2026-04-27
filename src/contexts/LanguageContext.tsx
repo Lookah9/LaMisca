@@ -1,0 +1,173 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+type Language = 'ro' | 'en';
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string) => string;
+}
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+export const translations: Record<Language, Record<string, string>> = {
+  ro: {
+    // Navbar
+    'nav.home': 'ACASĂ',
+    'nav.menu': 'MENIU',
+    'nav.cart': 'COȘ',
+    
+    // Hero
+    'hero.title': 'Bucătărie la Foc și Jar',
+    'hero.subtitle': 'Gustul autentic al tradiției, pregătit cu pasiune pe malul lacului Mogoșoaia.',
+    'hero.cta': 'COMANDĂ ACUM',
+    
+    // Home
+    'home.welcome': 'Bine ați venit la La Mișcă',
+    'home.intro': 'Un loc pentru cei care apreciază ritmul grătarului și căldura unei grădini.',
+    'home.cta_title': 'Ești gata să guști tradiția?',
+    'home.cta_subtitle': 'Alătură-te nouă pe terasă pentru o masă de neuitat lângă lac.',
+    'home.cta_btn': 'DESCOPERĂ MENIUL',
+    
+    // Menu
+    'menu.title': 'Meniul La Mișcă',
+    'menu.subtitle': 'Comandă acum și bucură-te de gustul autentic.',
+    'menu.add_to_cart': 'ADAUGĂ ÎN COȘ',
+    'menu.view_order': 'VEZI COMANDA',
+    'menu.total': 'TOTAL',
+    'menu.order_whatsapp': 'TRIMITE COMANDA PE WHATSAPP',
+    'menu.cart_empty': 'Coșul tău este gol.',
+    'menu.your_order': 'COMANDA TA',
+    'menu.whatsapp_redirect': 'Vei fi redirecționat către WhatsApp pentru a finaliza comanda.',
+    'menu.customer_name': 'Nume Complet',
+    'menu.customer_address': 'Adresă Livrare',
+    'menu.customer_phone': 'Număr de Telefon',
+    'menu.required_fields': 'Vă rugăm să completați toate câmpurile.',
+    'menu.total_order': 'TOTAL COMANDĂ',
+    
+    // Categories
+    'cat.all': 'TOATE',
+    'cat.starters': 'GUSTĂRI',
+    'cat.salads': 'SALATE',
+    'cat.burgers': 'BURGERI',
+    'cat.soups': 'SUPE & CIORBE',
+    'cat.pasta': 'PASTE',
+    'cat.meat': 'PREPARATE CARNE',
+    'cat.grill': 'GRĂTAR',
+    'cat.platters': 'PLATOURI',
+    'cat.fish': 'PEȘTE & FRUCTE DE MARE',
+    'cat.pizza': 'PIZZA',
+    'cat.dessert': 'DESERT',
+    'cat.drinks': 'BĂUTURI',
+    'cat.daily': 'MENIUL ZILEI',
+    
+    // Location
+    'loc.title': 'Locația Noastră',
+    'loc.subtitle': 'Te așteptăm în inima naturii, pe malul lacului, pentru o experiență culinară de neuitat.',
+    'loc.address': 'Adresă',
+    'loc.hours': 'Program',
+    'loc.contact': 'Contact',
+    'loc.nav_btn': 'NAVIGHEAZĂ ACUM',
+    'loc.hours_val': 'Luni - Duminică: 10:00 - 22:00',
+    
+    // Footer
+    'footer.description': 'Tradiție și gust pe malul lacului Mogoșoaia.',
+    'footer.quick_links': 'Link-uri Rapide',
+    'footer.rights': 'Toate drepturile rezervate.',
+  },
+  en: {
+    // Navbar
+    'nav.home': 'HOME',
+    'nav.menu': 'MENU',
+    'nav.cart': 'CART',
+    
+    // Hero
+    'hero.title': 'Cooking by Fire and Grill',
+    'hero.subtitle': 'The authentic taste of tradition, prepared with passion on the shores of Lake Mogoșoaia.',
+    'hero.cta': 'ORDER NOW',
+    
+    // Home
+    'home.welcome': 'Welcome to La Mișcă',
+    'home.intro': 'A place for those who appreciate the rhythm of the grill and the warmth of a garden.',
+    'home.cta_title': 'Ready to taste the tradition?',
+    'home.cta_subtitle': 'Join us on the terrace for an unforgettable meal by the lake.',
+    'home.cta_btn': 'DISCOVER THE MENU',
+    
+    // Menu
+    'menu.title': 'La Mișcă Menu',
+    'menu.subtitle': 'Order now and enjoy the authentic taste.',
+    'menu.add_to_cart': 'ADD TO CART',
+    'menu.view_order': 'VIEW ORDER',
+    'menu.total': 'TOTAL',
+    'menu.order_whatsapp': 'SEND ORDER VIA WHATSAPP',
+    'menu.cart_empty': 'Your cart is empty.',
+    'menu.your_order': 'YOUR ORDER',
+    'menu.whatsapp_redirect': 'You will be redirected to WhatsApp to finalize your order.',
+    'menu.customer_name': 'Full Name',
+    'menu.customer_address': 'Delivery Address',
+    'menu.customer_phone': 'Phone Number',
+    'menu.required_fields': 'Please fill in all fields.',
+    'menu.total_order': 'TOTAL ORDER',
+    
+    // Categories
+    'cat.all': 'ALL',
+    'cat.starters': 'STARTERS',
+    'cat.salads': 'SALADS',
+    'cat.burgers': 'BURGERS',
+    'cat.soups': 'SOUPS & STEWS',
+    'cat.pasta': 'PASTA',
+    'cat.meat': 'MEAT DISHES',
+    'cat.grill': 'GRILL',
+    'cat.platters': 'PLATTERS',
+    'cat.fish': 'FISH & SEAFOOD',
+    'cat.pizza': 'PIZZA',
+    'cat.dessert': 'DESSERT',
+    'cat.drinks': 'DRINKS',
+    'cat.daily': 'DAILY MENU',
+    
+    // Location
+    'loc.title': 'Our Location',
+    'loc.subtitle': 'We await you in the heart of nature, by the lake, for an unforgettable culinary experience.',
+    'loc.address': 'Address',
+    'loc.hours': 'Hours',
+    'loc.contact': 'Contact',
+    'loc.nav_btn': 'NAVIGATE NOW',
+    'loc.hours_val': 'Monday - Sunday: 10:00 - 22:00',
+    
+    // Footer
+    'footer.description': 'Tradition and taste on the shores of Lake Mogoșoaia.',
+    'footer.quick_links': 'Quick Links',
+    'footer.rights': 'All rights reserved.',
+  }
+};
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguage] = useState<Language>('ro');
+
+  useEffect(() => {
+    const browserLang = navigator.language.split('-')[0];
+    if (browserLang === 'ro') {
+      setLanguage('ro');
+    } else {
+      setLanguage('en');
+    }
+  }, []);
+
+  const t = (key: string) => {
+    return translations[language][key] || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (context === undefined) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
+};
