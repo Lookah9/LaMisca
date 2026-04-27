@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { ShoppingBag, Plus, Minus, Send, Phone as WhatsApp, X, Trash2 } from 'lucide-react';
+import { ShoppingBag, Plus, Minus, Send, Phone as WhatsApp, X, Trash2, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { MenuItem, CartItem } from '../App';
 
@@ -164,7 +164,30 @@ interface MenuProps {
 
 export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, removeFromCart, clearCart }: MenuProps) {
   const [activeCategory, setActiveCategory] = useState("Toate");
+  const [searchQuery, setSearchQuery] = useState("");
   const { t, language } = useLanguage();
+
+  const filteredItems = useMemo(() => {
+    let items = MENU_DATA;
+
+    // Filter by search query
+    if (searchQuery.trim() !== "") {
+      const query = searchQuery.toLowerCase();
+      items = items.filter(item => 
+        item.name.toLowerCase().includes(query) || 
+        (item.nameEn && item.nameEn.toLowerCase().includes(query)) ||
+        item.description.toLowerCase().includes(query) ||
+        (item.descriptionEn && item.descriptionEn.toLowerCase().includes(query))
+      );
+    }
+
+    // Filter by category (if not searching or if category is explicitly selected)
+    if (activeCategory !== "Toate") {
+      items = items.filter(item => item.category === activeCategory);
+    }
+
+    return items;
+  }, [activeCategory, searchQuery]);
 
   const groupedItems = useMemo(() => {
     const categoriesToRender = activeCategory === "Toate" 
@@ -173,9 +196,9 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
 
     return categoriesToRender.map(cat => ({
       category: cat,
-      items: MENU_DATA.filter(item => item.category === cat)
+      items: filteredItems.filter(item => item.category === cat)
     })).filter(group => group.items.length > 0);
-  }, [activeCategory]);
+  }, [activeCategory, filteredItems]);
 
   const total = cart.reduce((acc, curr) => acc + curr.item.price * curr.quantity, 0);
 
@@ -187,6 +210,44 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
           <p style={{ color: 'var(--color-text-light)', marginBottom: 'var(--spacing-md)' }}>
             {t('menu.subtitle')} Telefon: +40 727 783 800
           </p>
+
+          {/* Search Bar */}
+          <div style={{ 
+            maxWidth: '500px', 
+            margin: '0 auto var(--spacing-md)',
+            position: 'relative'
+          }}>
+            <Search 
+              size={20} 
+              style={{ 
+                position: 'absolute', 
+                left: '15px', 
+                top: '50%', 
+                transform: 'translateY(-50%)',
+                color: 'var(--color-text-light)',
+                opacity: 0.5
+              }} 
+            />
+            <input 
+              type="text"
+              placeholder={t('menu.search_placeholder')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '15px 15px 15px 45px',
+                borderRadius: '30px',
+                border: '1px solid rgba(0,0,0,0.1)',
+                backgroundColor: 'white',
+                fontSize: '1rem',
+                outline: 'none',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                transition: 'var(--transition)'
+              }}
+              onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(0,0,0,0.1)'}
+            />
+          </div>
           
           {/* Category Filter */}
           <div style={{ 
@@ -199,7 +260,11 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => {
+                  setActiveCategory(cat);
+                  // Optional: clear search when picking a category, or keep it?
+                  // Keeping it is usually better for UX.
+                }}
                 style={{
                   padding: '6px 16px',
                   borderRadius: '20px',
@@ -219,86 +284,93 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
         </div>
 
         {/* Menu Sections */}
-        {groupedItems.map(group => (
-          <div key={group.category} style={{ marginBottom: 'var(--spacing-xl)' }}>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '20px', 
-              marginBottom: 'var(--spacing-md)',
-              borderBottom: '1px solid rgba(0,0,0,0.1)',
-              paddingBottom: '10px'
-            }}>
-              <h2 style={{ 
-                fontSize: '1.8rem', 
-                fontWeight: 800, 
-                textTransform: 'uppercase', 
-                letterSpacing: '0.1em',
-                color: 'var(--color-text)'
+        {groupedItems.length > 0 ? (
+          groupedItems.map(group => (
+            <div key={group.category} style={{ marginBottom: 'var(--spacing-xl)' }}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '20px', 
+                marginBottom: 'var(--spacing-md)',
+                borderBottom: '1px solid rgba(0,0,0,0.1)',
+                paddingBottom: '10px'
               }}>
-                {t(CATEGORY_MAP[group.category])}
-              </h2>
-              <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-primary)', opacity: 0.3 }}></div>
-            </div>
+                <h2 style={{ 
+                  fontSize: '1.8rem', 
+                  fontWeight: 800, 
+                  textTransform: 'uppercase', 
+                  letterSpacing: '0.1em',
+                  color: 'var(--color-text)'
+                }}>
+                  {t(CATEGORY_MAP[group.category])}
+                </h2>
+                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-primary)', opacity: 0.3 }}></div>
+              </div>
 
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
-              gap: 'var(--spacing-md)' 
-            }}>
-              {group.items.map(item => (
-                <div key={item.id} style={{
-                  backgroundColor: 'white',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(0,0,0,0.05)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  overflow: 'hidden',
-                  transition: 'var(--transition)',
-                  boxShadow: '0 4px 6px rgba(0,0,0,0.02)'
-                }} className="menu-item-card">
-                  {/* Item Image */}
-                  <div style={{ height: '200px', width: '100%', overflow: 'hidden', backgroundColor: '#f5f5f5' }}>
-                    {item.image ? (
-                      <img 
-                        src={item.image} 
-                        alt={item.name} 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    ) : (
-                      <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc' }}>
-                        <ShoppingBag size={48} opacity={0.2} />
-                      </div>
-                    )}
-                  </div>
-
-                  <div style={{ padding: 'var(--spacing-md)', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                        <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>
-                          {language === 'en' && item.nameEn ? item.nameEn : item.name}
-                        </h3>
-                        <span style={{ fontWeight: 800, color: 'var(--color-primary)', fontSize: '1.1rem', whiteSpace: 'nowrap', marginLeft: '10px' }}>
-                          {item.price} lei
-                        </span>
-                      </div>
-                      <p style={{ fontSize: '0.9rem', color: 'var(--color-text-light)', marginBottom: 'var(--spacing-sm)', lineHeight: '1.4' }}>
-                        {language === 'en' && item.descriptionEn ? item.descriptionEn : item.description}
-                      </p>
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
+                gap: 'var(--spacing-md)' 
+              }}>
+                {group.items.map(item => (
+                  <div key={item.id} style={{
+                    backgroundColor: 'white',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(0,0,0,0.05)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflow: 'hidden',
+                    transition: 'var(--transition)',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.02)'
+                  }} className="menu-item-card">
+                    {/* Item Image */}
+                    <div style={{ height: '200px', width: '100%', overflow: 'hidden', backgroundColor: '#f5f5f5' }}>
+                      {item.image ? (
+                        <img 
+                          src={item.image} 
+                          alt={item.name} 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      ) : (
+                        <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc' }}>
+                          <ShoppingBag size={48} opacity={0.2} />
+                        </div>
+                      )}
                     </div>
-                    <button 
-                      onClick={() => addToCart(item)}
-                      className="btn-primary" 
-                      style={{ width: '100%', padding: '12px', fontSize: '0.85rem', fontWeight: 700, marginTop: '10px' }}
-                    >
-                      {t('menu.add_to_cart')}
-                    </button>
+
+                    <div style={{ padding: 'var(--spacing-md)', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                      <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                          <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>
+                            {language === 'en' && item.nameEn ? item.nameEn : item.name}
+                          </h3>
+                          <span style={{ fontWeight: 800, color: 'var(--color-primary)', fontSize: '1.1rem', whiteSpace: 'nowrap', marginLeft: '10px' }}>
+                            {item.price} lei
+                          </span>
+                        </div>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--color-text-light)', marginBottom: 'var(--spacing-sm)', lineHeight: '1.4' }}>
+                          {language === 'en' && item.descriptionEn ? item.descriptionEn : item.description}
+                        </p>
+                      </div>
+                      <button 
+                        onClick={() => addToCart(item)}
+                        className="btn-primary" 
+                        style={{ width: '100%', padding: '12px', fontSize: '0.85rem', fontWeight: 700, marginTop: '10px' }}
+                      >
+                        {t('menu.add_to_cart')}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
+          ))
+        ) : (
+          <div style={{ textAlign: 'center', padding: 'var(--spacing-xl) 0', opacity: 0.5 }}>
+            <Search size={48} style={{ marginBottom: 'var(--spacing-sm)' }} />
+            <h3>{t('menu.no_results')}</h3>
           </div>
-        ))}
+        )}
       </div>
 
       {/* Floating Cart Button (Mobile) */}

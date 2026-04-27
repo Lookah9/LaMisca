@@ -44,6 +44,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'menu.customer_phone': 'Număr de Telefon',
     'menu.required_fields': 'Vă rugăm să completați toate câmpurile.',
     'menu.total_order': 'TOTAL COMANDĂ',
+    'menu.search_placeholder': 'Caută un preparat...',
+    'menu.no_results': 'Niciun rezultat găsit pentru căutarea ta.',
     
     // Categories
     'cat.all': 'TOATE',
@@ -108,6 +110,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'menu.customer_phone': 'Phone Number',
     'menu.required_fields': 'Please fill in all fields.',
     'menu.total_order': 'TOTAL ORDER',
+    'menu.search_placeholder': 'Search for a dish...',
+    'menu.no_results': 'No results found for your search.',
     
     // Categories
     'cat.all': 'ALL',
