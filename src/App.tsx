@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Home from './pages/Home'
 import Menu from './pages/Menu'
 import Navbar from './components/Navbar'
@@ -25,8 +25,22 @@ export interface CartItem {
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    const savedCart = localStorage.getItem('laMiscaCart');
+    if (savedCart) {
+      try {
+        return JSON.parse(savedCart);
+      } catch (e) {
+        console.error("Failed to parse cart from local storage", e);
+      }
+    }
+    return [];
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('laMiscaCart', JSON.stringify(cart));
+  }, [cart]);
 
   const cartCount = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
