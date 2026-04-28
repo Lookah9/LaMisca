@@ -20,7 +20,7 @@ export default function Hero({ navigateTo }: HeroProps) {
     }}>
       {/* Background Image Placeholder or Generated Image */}
       <img 
-        src="images/hero.webp" 
+        src="images/Sketched Hero.webp" 
         alt="La Misca Terrace Atmosphere"
         style={{
           position: 'absolute',
