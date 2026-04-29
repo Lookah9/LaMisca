@@ -86,7 +86,7 @@ function App() {
         clearCart={clearCart}
       />
       
-      <main>
+      <main style={{ paddingTop: currentPage === 'home' ? 0 : '100px' }}>
         {currentPage === 'home' ? (
           <Home navigateTo={navigateTo} />
         ) : (
