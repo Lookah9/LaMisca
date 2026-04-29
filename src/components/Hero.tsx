@@ -40,7 +40,7 @@ export default function Hero({ navigateTo }: HeroProps) {
         left: 0,
         width: '100%',
         height: '100%',
-        background: 'radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%)'
+        background: 'rgba(0,0,0,0.3)'
       }}></div>
       
       <div className="container" style={{
@@ -48,20 +48,21 @@ export default function Hero({ navigateTo }: HeroProps) {
         zIndex: 1,
         color: 'var(--color-bg)',
         textAlign: 'center',
-        maxWidth: '900px'
+        maxWidth: '700px'
       }}>
         <p style={{
-          fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-          lineHeight: '1.2',
+          fontSize: 'clamp(1.1rem, 2vw, 1.4rem)', // Reduced size to subtext format
+          lineHeight: '1.6',
           margin: '0 auto var(--spacing-lg)',
-          fontWeight: 700,
-          textShadow: '0 2px 10px rgba(0,0,0,0.3)',
-          letterSpacing: '-0.02em'
+          fontWeight: 400, // Lighter weight
+          opacity: 0.95,
+          textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+          letterSpacing: '0.02em'
         }}>
           {t('hero.subtitle')}
         </p>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <button onClick={() => navigateTo('menu')} className="btn-primary" style={{ padding: '18px 45px', fontSize: '1.1rem', borderRadius: '50px' }}>
+          <button onClick={() => navigateTo('menu')} className="btn-primary" style={{ padding: '15px 40px', fontSize: '1.1rem', borderRadius: '50px' }}>
             {t('hero.cta')}
           </button>
         </div>
