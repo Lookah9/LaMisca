@@ -18,7 +18,7 @@ export default function Hero({ navigateTo }: HeroProps) {
       overflow: 'hidden',
       backgroundColor: '#000'
     }}>
-      {/* Background Image Placeholder or Generated Image */}
+      {/* Background Image */}
       <img 
         src="images/Sketched Hero.webp" 
         alt="La Misca Terrace Atmosphere"
@@ -29,31 +29,39 @@ export default function Hero({ navigateTo }: HeroProps) {
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          opacity: 0.7
+          opacity: 0.65
         }}
       />
+      
+      {/* Overlay for better text readability */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%)'
+      }}></div>
       
       <div className="container" style={{
         position: 'relative',
         zIndex: 1,
         color: 'var(--color-bg)',
-        textAlign: 'center'
+        textAlign: 'center',
+        maxWidth: '900px'
       }}>
-        <h1 className="hero-text" style={{ color: 'var(--color-bg)', marginBottom: 'var(--spacing-sm)' }}>
-          LA <span style={{ fontStyle: 'italic' }}>MISCA</span>
-        </h1>
         <p style={{
-          fontSize: 'clamp(1.2rem, 2vw, 1.5rem)',
-          maxWidth: '600px',
-          margin: '0 auto var(--spacing-md)',
-          opacity: 0.9,
-          fontWeight: 300,
-          letterSpacing: '0.05em'
+          fontSize: 'clamp(1.8rem, 4vw, 3rem)',
+          lineHeight: '1.2',
+          margin: '0 auto var(--spacing-lg)',
+          fontWeight: 700,
+          textShadow: '0 2px 10px rgba(0,0,0,0.3)',
+          letterSpacing: '-0.02em'
         }}>
           {t('hero.subtitle')}
         </p>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <button onClick={() => navigateTo('menu')} className="btn-primary" style={{ padding: '15px 40px', fontSize: '1.1rem' }}>
+          <button onClick={() => navigateTo('menu')} className="btn-primary" style={{ padding: '18px 45px', fontSize: '1.1rem', borderRadius: '50px' }}>
             {t('hero.cta')}
           </button>
         </div>

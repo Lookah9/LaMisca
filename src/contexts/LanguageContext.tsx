@@ -19,7 +19,7 @@ export const translations: Record<Language, Record<string, string>> = {
     
     // Hero
     'hero.title': 'Bucătărie la Foc și Jar',
-    'hero.subtitle': 'Gustul autentic al tradiției, pregătit cu pasiune pe malul lacului Mogoșoaia.',
+    'hero.subtitle': 'Pizza la cuptor, grill și mese la terasă, lângă verdele Parcului Mogoșoaia.',
     'hero.cta': 'COMANDĂ ACUM',
     
     // Home
@@ -85,7 +85,7 @@ export const translations: Record<Language, Record<string, string>> = {
     
     // Hero
     'hero.title': 'Cooking by Fire and Grill',
-    'hero.subtitle': 'The authentic taste of tradition, prepared with passion on the shores of Lake Mogoșoaia.',
+    'hero.subtitle': 'Oven-baked pizza, grill, and terrace dining, next to the greenery of Mogoșoaia Park.',
     'hero.cta': 'ORDER NOW',
     
     // Home
