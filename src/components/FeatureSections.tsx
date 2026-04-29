@@ -18,7 +18,7 @@ function FeatureRow({ title, subtitle, description, image, reverse, buttonLabel,
     <div className="container" style={{ marginBottom: 'var(--spacing-xl)' }}>
       <div className="grid-2" style={{ alignItems: 'center' }}>
         <div style={{ order: reverse ? 2 : 1 }}>
-          <div className="accent-border"></div>
+          <div className="accent-border" aria-hidden="true"></div>
           <span style={{ 
             textTransform: 'uppercase', 
             letterSpacing: '0.2em', 
@@ -42,6 +42,7 @@ function FeatureRow({ title, subtitle, description, image, reverse, buttonLabel,
             <button 
               className="btn-outline" 
               onClick={onButtonClick}
+              aria-label={buttonLabel || t('hero.cta')}
               style={{ padding: '12px 30px' }}
             >
               {buttonLabel || t('hero.cta')}
@@ -58,6 +59,7 @@ function FeatureRow({ title, subtitle, description, image, reverse, buttonLabel,
           <img 
             src={image} 
             alt={title} 
+            loading="lazy"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
           />
         </div>
@@ -89,7 +91,7 @@ export default function FeatureSections({ navigateTo, setMenuSearchQuery }: Feat
   };
 
   return (
-    <section className="section">
+    <section className="section" aria-label="Caracteristici și Poveste">
       <FeatureRow 
         subtitle={language === 'ro' ? "Povestea Noastră" : "Our Story"}
         title={language === 'ro' ? "La Mișcă" : "La Mișcă"}

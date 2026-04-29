@@ -8,21 +8,25 @@ interface HeroProps {
 export default function Hero({ navigateTo }: HeroProps) {
   const { t } = useLanguage();
   return (
-    <section style={{
-      height: '90vh',
-      width: '100%',
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'flex-end',
-      justifyContent: 'center',
-      paddingBottom: '10vh',
-      overflow: 'hidden',
-      backgroundColor: '#000'
-    }}>
-      {/* Background Image - Reverted to original */}
+    <section 
+      style={{
+        height: '90vh',
+        width: '100%',
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        paddingBottom: '10vh',
+        overflow: 'hidden',
+        backgroundColor: '#000'
+      }}
+      aria-label="Introducere"
+    >
+      {/* Background Image - LCP Optimized */}
       <img 
         src="images/hero.webp" 
-        alt="La Misca Terrace Atmosphere"
+        alt="Atmosfera de pe terasa La Mișcă"
+        fetchpriority="high"
         style={{
           position: 'absolute',
           top: 0,
@@ -42,7 +46,7 @@ export default function Hero({ navigateTo }: HeroProps) {
         width: '100%',
         height: '100%',
         background: 'rgba(0,0,0,0.3)'
-      }}></div>
+      }} aria-hidden="true"></div>
       
       <div className="container" style={{
         position: 'relative',
@@ -56,14 +60,24 @@ export default function Hero({ navigateTo }: HeroProps) {
           lineHeight: '1.6',
           margin: '0 auto var(--spacing-md)',
           fontWeight: 400,
-          opacity: 0.9,
-          textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+          opacity: 1, // Full opacity for better contrast/accessibility
+          textShadow: '0 2px 4px rgba(0,0,0,0.8)',
           letterSpacing: '0.02em'
         }}>
           {t('hero.subtitle')}
         </p>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <button onClick={() => navigateTo('menu')} className="btn-primary" style={{ padding: '12px 35px', fontSize: '1rem', borderRadius: '50px' }}>
+          <button 
+            onClick={() => navigateTo('menu')} 
+            className="btn-primary" 
+            aria-label={t('home.cta_btn') || "Vezi meniul nostru"}
+            style={{ 
+              padding: '12px 35px', 
+              fontSize: '1rem', 
+              borderRadius: '50px',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.3)' 
+            }}
+          >
             {t('hero.cta')}
           </button>
         </div>

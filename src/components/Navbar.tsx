@@ -20,14 +20,17 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
   };
 
   return (
-    <nav style={{
-      padding: 'var(--spacing-sm) 0',
-      backgroundColor: 'var(--color-bg)',
-      borderBottom: '1px solid rgba(0,0,0,0.05)',
-      position: 'sticky',
-      top: 0,
-      zIndex: 1000
-    }}>
+    <nav 
+      style={{
+        padding: 'var(--spacing-sm) 0',
+        backgroundColor: 'var(--color-bg)',
+        borderBottom: '1px solid rgba(0,0,0,0.05)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000
+      }}
+      aria-label="Navigație principală"
+    >
       <div className="container" style={{
         display: 'grid',
         gridTemplateColumns: '1fr auto 1fr',
@@ -35,9 +38,11 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
       }}>
         {/* Left Side: Language Toggle */}
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ display: 'flex', gap: '5px' }}>
+          <div style={{ display: 'flex', gap: '5px' }} role="group" aria-label="Selectare limbă">
             <button 
               onClick={() => setLanguage('ro')}
+              aria-label="Schimbă limba în Română"
+              aria-pressed={language === 'ro'}
               style={{ 
                 fontSize: '0.85rem', 
                 fontWeight: language === 'ro' ? 'bold' : 'normal',
@@ -45,14 +50,18 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
                 opacity: language === 'ro' ? 1 : 0.6,
                 padding: '5px 8px',
                 transition: 'var(--transition)',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                background: 'none',
+                border: 'none'
               }}
             >
               RO
             </button>
-            <span style={{ opacity: 0.2, alignSelf: 'center' }}>|</span>
+            <span style={{ opacity: 0.2, alignSelf: 'center' }} aria-hidden="true">|</span>
             <button 
               onClick={() => setLanguage('en')}
+              aria-label="Change language to English"
+              aria-pressed={language === 'en'}
               style={{ 
                 fontSize: '0.85rem', 
                 fontWeight: language === 'en' ? 'bold' : 'normal',
@@ -60,7 +69,9 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
                 opacity: language === 'en' ? 1 : 0.6,
                 padding: '5px 8px',
                 transition: 'var(--transition)',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                background: 'none',
+                border: 'none'
               }}
             >
               EN
@@ -71,6 +82,8 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
         {/* Center Side: Logo */}
         <div 
           onClick={() => handleNavigate('home')}
+          role="button"
+          aria-label="Mergi la pagina principală"
           style={{
             cursor: 'pointer',
             display: 'flex',
@@ -82,6 +95,7 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
           <img 
             src="images/logo.png" 
             alt="La Misca Logo" 
+            loading="lazy"
             style={{ 
               height: '80px', 
               width: 'auto',
@@ -97,22 +111,30 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
           <div style={{ display: 'flex', gap: 'var(--spacing-md)', alignItems: 'center' }} className="desktop-menu">
             <button 
               onClick={() => handleNavigate('home')}
+              aria-current={currentPage === 'home' ? 'page' : undefined}
               style={{ 
                 fontSize: '0.9rem',
                 fontWeight: currentPage === 'home' ? '700' : '500',
                 color: currentPage === 'home' ? 'var(--color-primary)' : 'var(--color-text)',
-                transition: 'var(--transition)'
+                transition: 'var(--transition)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer'
               }}
             >
               {t('nav.home')}
             </button>
             <button 
               onClick={() => handleNavigate('menu')}
+              aria-current={currentPage === 'menu' ? 'page' : undefined}
               style={{ 
                 fontSize: '0.9rem',
                 fontWeight: currentPage === 'menu' ? '700' : '500',
                 color: currentPage === 'menu' ? 'var(--color-primary)' : 'var(--color-text)',
-                transition: 'var(--transition)'
+                transition: 'var(--transition)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer'
               }}
             >
               {t('nav.menu')}
@@ -120,8 +142,9 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
           </div>
 
           {/* Cart Button (Always visible) */}
-          <div 
+          <button 
             onClick={onCartClick}
+            aria-label={`Vezi coșul de cumpărături, ${cartCount} produse`}
             style={{ 
               position: 'relative', 
               cursor: 'pointer',
@@ -131,11 +154,12 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               padding: '8px',
               backgroundColor: 'var(--color-bg-dark)',
               borderRadius: '50%',
-              transition: 'var(--transition)'
+              transition: 'var(--transition)',
+              border: 'none'
             }}
             className="cart-btn-nav"
           >
-            <ShoppingBag size={20} />
+            <ShoppingBag size={20} aria-hidden="true" />
             {cartCount > 0 && (
               <span style={{
                 position: 'absolute',
@@ -156,42 +180,52 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
                 {cartCount}
               </span>
             )}
-          </div>
+          </button>
 
           {/* Mobile Burger Button */}
-          <div 
+          <button 
             className="mobile-menu-btn" 
-            style={{ display: 'none', zIndex: 1001, cursor: 'pointer', padding: '5px' }} 
+            aria-label={isMobileMenuOpen ? "Închide meniul" : "Deschide meniul"}
+            aria-expanded={isMobileMenuOpen}
+            style={{ display: 'none', zIndex: 1001, cursor: 'pointer', padding: '5px', background: 'none', border: 'none' }} 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={28} /> : <MenuIcon size={28} />}
-          </div>
+          </button>
         </div>
       </div>
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100vh',
-          backgroundColor: 'var(--color-bg)',
-          zIndex: 1000,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 'var(--spacing-lg)',
-          animation: 'fadeIn 0.3s ease'
-        }}>
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100vh',
+            backgroundColor: 'var(--color-bg)',
+            zIndex: 1000,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 'var(--spacing-lg)',
+            animation: 'fadeIn 0.3s ease'
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Meniu mobil"
+        >
           <button 
             onClick={() => handleNavigate('home')}
             style={{ 
               fontSize: '2rem', 
               fontWeight: currentPage === 'home' ? '700' : '400',
-              color: 'var(--color-text)'
+              color: 'var(--color-text)',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer'
             }}
           >
             {t('nav.home')}
@@ -201,7 +235,10 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
             style={{ 
               fontSize: '2rem', 
               fontWeight: currentPage === 'menu' ? '700' : '400',
-              color: 'var(--color-text)'
+              color: 'var(--color-text)',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer'
             }}
           >
             {t('nav.menu')}
@@ -210,7 +247,9 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
           {/* Logo in Mobile Menu Background */}
           <img 
             src="images/logo.png" 
-            alt="Logo Watermark" 
+            alt="" 
+            aria-hidden="true"
+            loading="lazy"
             style={{ 
               position: 'absolute',
               bottom: '50px',

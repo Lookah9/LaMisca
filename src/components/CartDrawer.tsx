@@ -76,18 +76,24 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
   if (!isCartOpen) return null;
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'rgba(0,0,0,0.6)',
-      zIndex: 3000,
-      display: 'flex',
-      justifyContent: 'flex-end',
-      backdropFilter: 'blur(8px)'
-    }} onClick={() => setIsCartOpen(false)}>
+    <div 
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        zIndex: 3000,
+        display: 'flex',
+        justifyContent: 'flex-end',
+        backdropFilter: 'blur(8px)'
+      }} 
+      onClick={() => setIsCartOpen(false)}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cart-drawer-title"
+    >
       <div style={{
         width: '100%',
         maxWidth: '450px',
@@ -106,23 +112,25 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
             {step === 'details' ? (
               <button 
                 onClick={() => setStep('cart')}
+                aria-label="Înapoi la coșul de cumpărături"
                 style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px', color: 'var(--color-primary)', fontWeight: 700 }}
               >
-                <ChevronLeft size={20} />
-                {t('menu.back_to_cart') || 'ÎNAPOI'}
+                <ChevronLeft size={20} aria-hidden="true" />
+                {t('menu.back_to_cart')}
               </button>
             ) : (
               <>
-                <ShoppingBag size={24} />
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>{t('menu.your_order')}</h2>
+                <ShoppingBag size={24} aria-hidden="true" />
+                <h2 id="cart-drawer-title" style={{ fontSize: '1.5rem', fontWeight: 800 }}>{t('menu.your_order')}</h2>
               </>
             )}
           </div>
           <button 
             onClick={() => setIsCartOpen(false)}
+            aria-label="Închide coșul"
             style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '5px' }}
           >
-            <X size={28} />
+            <X size={28} aria-hidden="true" />
           </button>
         </div>
 
@@ -130,7 +138,7 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
         <div style={{ flex: 1, overflowY: 'auto', paddingRight: '5px' }}>
           {cart.length === 0 ? (
             <div style={{ textAlign: 'center', marginTop: '50px', color: 'var(--color-text-light)' }}>
-              <ShoppingBag size={48} style={{ opacity: 0.2, marginBottom: '20px' }} />
+              <ShoppingBag size={48} style={{ opacity: 0.2, marginBottom: '20px' }} aria-hidden="true" />
               <p>{t('menu.cart_empty')}</p>
             </div>
           ) : step === 'cart' ? (
@@ -153,16 +161,18 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
                   <div style={{ display: 'flex', alignItems: 'center', gap: '15px', backgroundColor: '#f9f9f9', padding: '5px 12px', borderRadius: '25px' }}>
                     <button 
                       onClick={() => removeFromCart(i.item.id)}
+                      aria-label={`Elimină o porție de ${i.item.name}`}
                       style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', color: 'var(--color-text)' }}
                     >
-                      <Minus size={16} />
+                      <Minus size={16} aria-hidden="true" />
                     </button>
-                    <span style={{ fontWeight: 800, minWidth: '20px', textAlign: 'center' }}>{i.quantity}</span>
+                    <span style={{ fontWeight: 800, minWidth: '20px', textAlign: 'center' }} aria-label={`Cantitate: ${i.quantity}`}>{i.quantity}</span>
                     <button 
                       onClick={() => addToCart(i.item)}
+                      aria-label={`Adaugă o porție de ${i.item.name}`}
                       style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', color: 'var(--color-text)' }}
                     >
-                      <Plus size={16} />
+                      <Plus size={16} aria-hidden="true" />
                     </button>
                   </div>
                 </div>
@@ -176,9 +186,11 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
               </h3>
               
               {/* Method Selector */}
-              <div style={{ display: 'flex', gap: '10px', marginBottom: '25px' }}>
+              <div style={{ display: 'flex', gap: '10px', marginBottom: '25px' }} role="radiogroup" aria-label="Metodă de primire a comenzii">
                 <button 
                   onClick={() => setDeliveryMethod('delivery')}
+                  aria-checked={deliveryMethod === 'delivery'}
+                  role="radio"
                   style={{
                     flex: 1,
                     padding: '20px 10px',
@@ -193,11 +205,13 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
                     transition: 'all 0.2s ease'
                   }}
                 >
-                  <Truck size={24} color={deliveryMethod === 'delivery' ? 'var(--color-primary)' : '#666'} />
+                  <Truck size={24} color={deliveryMethod === 'delivery' ? 'var(--color-primary)' : '#666'} aria-hidden="true" />
                   <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>{language === 'ro' ? 'LIVRARE' : 'DELIVERY'}</span>
                 </button>
                 <button 
                   onClick={() => setDeliveryMethod('pickup')}
+                  aria-checked={deliveryMethod === 'pickup'}
+                  role="radio"
                   style={{
                     flex: 1,
                     padding: '20px 10px',
@@ -212,7 +226,7 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
                     transition: 'all 0.2s ease'
                   }}
                 >
-                  <Store size={24} color={deliveryMethod === 'pickup' ? 'var(--color-primary)' : '#666'} />
+                  <Store size={24} color={deliveryMethod === 'pickup' ? 'var(--color-primary)' : '#666'} aria-hidden="true" />
                   <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>{language === 'ro' ? 'RIDICARE' : 'PICKUP'}</span>
                 </button>
               </div>
@@ -220,12 +234,14 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
               {/* Form Fields */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <div className="input-group">
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '5px', opacity: 0.7 }}>{t('menu.customer_name').toUpperCase()}</label>
+                  <label htmlFor="customer-name" style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '5px', opacity: 0.7 }}>{t('menu.customer_name').toUpperCase()}</label>
                   <input 
+                    id="customer-name"
                     type="text" 
                     placeholder="ex: Andrei Popescu"
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
+                    aria-required="true"
                     style={{
                       width: '100%',
                       padding: '12px 15px',
@@ -237,12 +253,14 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
                 </div>
                 
                 <div className="input-group">
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '5px', opacity: 0.7 }}>{t('menu.customer_phone').toUpperCase()}</label>
+                  <label htmlFor="customer-phone" style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '5px', opacity: 0.7 }}>{t('menu.customer_phone').toUpperCase()}</label>
                   <input 
+                    id="customer-phone"
                     type="tel" 
                     placeholder="07xx xxx xxx"
                     value={customerPhone}
                     onChange={(e) => setCustomerPhone(e.target.value)}
+                    aria-required="true"
                     style={{
                       width: '100%',
                       padding: '12px 15px',
@@ -255,12 +273,14 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
 
                 {deliveryMethod === 'delivery' && (
                   <div className="input-group" style={{ animation: 'fadeIn 0.3s ease' }}>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '5px', opacity: 0.7 }}>{t('menu.customer_address').toUpperCase()}</label>
+                    <label htmlFor="customer-address" style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '5px', opacity: 0.7 }}>{t('menu.customer_address').toUpperCase()}</label>
                     <textarea 
+                      id="customer-address"
                       placeholder="Strada, Număr, Bloc, Apartament..."
                       value={customerAddress}
                       onChange={(e) => setCustomerAddress(e.target.value)}
                       rows={3}
+                      aria-required="true"
                       style={{
                         width: '100%',
                         padding: '12px 15px',
@@ -275,7 +295,7 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
 
                 {deliveryMethod === 'pickup' && (
                   <div style={{ padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px', display: 'flex', gap: '10px', alignItems: 'flex-start', marginTop: '5px' }}>
-                    <MapPin size={20} color="var(--color-primary)" style={{ marginTop: '2px' }} />
+                    <MapPin size={20} color="var(--color-primary)" style={{ marginTop: '2px' }} aria-hidden="true" />
                     <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>
                       <strong>Locație Ridicare:</strong><br />
                       Strada Valea Parcului 42, Mogoșoaia
@@ -285,7 +305,7 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
               </div>
 
               {formError && (
-                <p style={{ color: '#e11d48', fontSize: '0.85rem', marginTop: '15px', fontWeight: 700, textAlign: 'center' }}>
+                <p role="alert" style={{ color: '#e11d48', fontSize: '0.85rem', marginTop: '15px', fontWeight: 700, textAlign: 'center' }}>
                   {t('menu.required_fields')}
                 </p>
               )}
@@ -306,6 +326,7 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
                 <>
                   <button 
                     onClick={clearCart}
+                    aria-label="Golește tot coșul de cumpărături"
                     style={{
                       width: '60px',
                       borderRadius: '12px',
@@ -317,13 +338,13 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
                       justifyContent: 'center',
                       transition: 'var(--transition)'
                     }}
-                    title="Golește coșul"
                   >
-                    <Trash2 size={20} color="#e11d48" />
+                    <Trash2 size={20} color="#e11d48" aria-hidden="true" />
                   </button>
                   <button 
                     onClick={() => setStep('details')}
                     className="btn-primary" 
+                    aria-label="Continuă la detaliile de livrare"
                     style={{ 
                       flex: 1, 
                       display: 'flex', 
@@ -337,13 +358,14 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
                     }}
                   >
                     {language === 'ro' ? 'CONTINUĂ' : 'CONTINUE'}
-                    <ChevronRight size={20} />
+                    <ChevronRight size={20} aria-hidden="true" />
                   </button>
                 </>
               ) : (
                 <button 
                   onClick={sendOrder}
                   className="btn-primary" 
+                  aria-label="Trimite comanda pe WhatsApp"
                   style={{ 
                     flex: 1, 
                     display: 'flex', 
@@ -356,7 +378,7 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
                     borderRadius: '12px'
                   }}
                 >
-                  <WhatsApp size={22} />
+                  <WhatsApp size={22} aria-hidden="true" />
                   {t('menu.order_whatsapp')}
                 </button>
               )}

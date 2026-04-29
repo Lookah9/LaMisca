@@ -9,13 +9,16 @@ interface FooterProps {
 export default function Footer({ navigateTo }: FooterProps) {
   const { t } = useLanguage();
   return (
-    <footer style={{
-      backgroundColor: 'var(--color-text)',
-      color: 'var(--color-bg)',
-      padding: 'var(--spacing-xl) 0 var(--spacing-md)',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
+    <footer 
+      style={{
+        backgroundColor: 'var(--color-text)',
+        color: 'var(--color-bg)',
+        padding: 'var(--spacing-xl) 0 var(--spacing-md)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}
+      aria-label="Subsol pagină"
+    >
       <div className="container">
         <div style={{ 
           display: 'grid', 
@@ -25,13 +28,15 @@ export default function Footer({ navigateTo }: FooterProps) {
         }}>
           {/* Logo and Social links */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-            <div 
+            <button 
               onClick={() => navigateTo('home')}
-              style={{ cursor: 'pointer', marginBottom: 'var(--spacing-md)' }}
+              aria-label="Mergi la pagina principală"
+              style={{ cursor: 'pointer', marginBottom: 'var(--spacing-md)', background: 'none', border: 'none', padding: 0 }}
             >
               <img 
                 src="images/logo.png" 
                 alt="La Misca Logo" 
+                loading="lazy"
                 style={{ 
                   height: '100px', 
                   width: 'auto',
@@ -39,12 +44,13 @@ export default function Footer({ navigateTo }: FooterProps) {
                   objectFit: 'contain'
                 }} 
               />
-            </div>
+            </button>
             <div style={{ display: 'flex', gap: '15px', marginTop: '5px' }}>
               <a 
                 href="https://www.instagram.com/la.misca/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
+                aria-label="Urmărește-ne pe Instagram"
                 style={{ 
                   color: 'inherit', 
                   opacity: 0.8,
@@ -52,12 +58,13 @@ export default function Footer({ navigateTo }: FooterProps) {
                 }}
                 className="social-link"
               >
-                <Instagram size={20} strokeWidth={2} />
+                <Instagram size={20} strokeWidth={2} aria-hidden="true" />
               </a>
               <a 
                 href="https://www.facebook.com/p/La-Mișcă-100070733624460/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
+                aria-label="Urmărește-ne pe Facebook"
                 style={{ 
                   color: 'inherit', 
                   opacity: 0.8,
@@ -65,7 +72,7 @@ export default function Footer({ navigateTo }: FooterProps) {
                 }}
                 className="social-link"
               >
-                <Facebook size={20} strokeWidth={2} />
+                <Facebook size={20} strokeWidth={2} aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -83,19 +90,19 @@ export default function Footer({ navigateTo }: FooterProps) {
             </h4>
             <ul style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <li style={{ display: 'flex', alignItems: 'center', gap: '10px', opacity: 0.8, fontSize: '0.95rem' }}>
-                <MapPin size={18} /> Strada Valea Parcului 42, Mogoșoaia
+                <MapPin size={18} aria-hidden="true" /> Strada Valea Parcului 42, Mogoșoaia
               </li>
               <li style={{ display: 'flex', alignItems: 'center', gap: '10px', opacity: 0.8, fontSize: '0.95rem' }}>
-                <Phone size={18} /> +40 727 783 800
+                <Phone size={18} aria-hidden="true" /> +40 727 783 800
               </li>
               <li style={{ display: 'flex', alignItems: 'center', gap: '10px', opacity: 0.8, fontSize: '0.95rem' }}>
-                <Mail size={18} /> contact@lamisca.ro
+                <Mail size={18} aria-hidden="true" /> contact@lamisca.ro
               </li>
             </ul>
           </div>
 
           {/* Quick Links */}
-          <div>
+          <nav aria-label="Link-uri rapide în subsol">
             <h4 style={{ 
               textTransform: 'uppercase', 
               marginBottom: 'var(--spacing-md)', 
@@ -123,7 +130,7 @@ export default function Footer({ navigateTo }: FooterProps) {
                 </button>
               </li>
             </ul>
-          </div>
+          </nav>
         </div>
         
         <div style={{

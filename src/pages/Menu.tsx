@@ -90,10 +90,10 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
   };
 
   return (
-    <div style={{ minHeight: '80vh', padding: 'var(--spacing-xl) 0' }}>
+    <main style={{ minHeight: '80vh', padding: 'var(--spacing-xl) 0' }} aria-labelledby="menu-main-title">
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-lg)' }}>
-          <h1 className="section-title">{t('menu.title')}</h1>
+          <h1 id="menu-main-title" className="section-title">{t('menu.title')}</h1>
           <p style={{ color: 'var(--color-text-light)', marginBottom: 'var(--spacing-md)' }}>
             {t('menu.subtitle')} Telefon: +40 727 783 800
           </p>
@@ -106,6 +106,7 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
           }}>
             <Search 
               size={20} 
+              aria-hidden="true"
               style={{ 
                 position: 'absolute', 
                 left: '15px', 
@@ -120,6 +121,7 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
               placeholder={t('menu.search_placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Caută produse în meniu"
               style={{
                 width: '100%',
                 padding: '15px 15px 15px 45px',
@@ -137,16 +139,23 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
           </div>
           
           {/* Category Filter */}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            gap: 'var(--spacing-xs)', 
-            flexWrap: 'wrap',
-            marginBottom: 'var(--spacing-md)'
-          }}>
+          <div 
+            style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              gap: 'var(--spacing-xs)', 
+              flexWrap: 'wrap',
+              marginBottom: 'var(--spacing-md)'
+            }}
+            role="tablist"
+            aria-label="Categorii meniu"
+          >
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
+                role="tab"
+                aria-selected={activeCategory === cat}
+                aria-controls={`panel-${cat}`}
                 onClick={() => {
                   setActiveCategory(cat);
                 }}
@@ -155,7 +164,7 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                   borderRadius: '20px',
                   border: `1px solid ${activeCategory === cat ? 'var(--color-primary)' : '#ddd'}`,
                   backgroundColor: activeCategory === cat ? 'var(--color-primary)' : 'white',
-                  color: activeCategory === cat ? 'var(--color-white)' : 'var(--color-text)',
+                  color: activeCategory === cat ? 'white' : 'var(--color-text)',
                   fontSize: '0.85rem',
                   fontWeight: 600,
                   cursor: 'pointer',
@@ -171,7 +180,13 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
         {/* Menu Sections */}
         {groupedItems.length > 0 ? (
           groupedItems.map(group => (
-            <div key={group.category} style={{ marginBottom: 'var(--spacing-xl)' }}>
+            <section 
+              key={group.category} 
+              id={`panel-${group.category}`}
+              role="tabpanel"
+              style={{ marginBottom: 'var(--spacing-xl)' }}
+              aria-labelledby={`heading-${group.category}`}
+            >
               <div style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
@@ -180,7 +195,7 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                 borderBottom: '1px solid rgba(0,0,0,0.1)',
                 paddingBottom: '10px'
               }}>
-                <h2 style={{ 
+                <h2 id={`heading-${group.category}`} style={{ 
                   fontSize: '1.8rem', 
                   fontWeight: 800, 
                   textTransform: 'uppercase', 
@@ -189,7 +204,7 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                 }}>
                   {t(CATEGORY_MAP[group.category])}
                 </h2>
-                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-primary)', opacity: 0.3 }}></div>
+                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-primary)', opacity: 0.3 }} aria-hidden="true"></div>
               </div>
 
               <div style={{ 
@@ -199,8 +214,9 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
               }}>
                 {group.items.map(item => {
                   const quantity = getItemQuantity(item.id);
+                  const itemName = language === 'en' && item.nameEn ? item.nameEn : item.name;
                   return (
-                    <div key={item.id} style={{
+                    <article key={item.id} style={{
                       backgroundColor: 'white',
                       borderRadius: '12px',
                       border: '1px solid rgba(0,0,0,0.05)',
@@ -224,7 +240,8 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                         {item.image ? (
                           <img 
                             src={item.image} 
-                            alt={item.name} 
+                            alt={itemName} 
+                            loading="lazy"
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                           />
                         ) : (
@@ -236,7 +253,7 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                             flexDirection: 'column',
                             alignItems: 'center',
                             gap: '10px'
-                          }}>
+                          }} aria-hidden="true">
                             <Utensils size={48} />
                             <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                               {t(CATEGORY_MAP[item.category])}
@@ -249,7 +266,7 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                         <div>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                             <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>
-                              {language === 'en' && item.nameEn ? item.nameEn : item.name}
+                              {itemName}
                             </h3>
                             <span style={{ fontWeight: 800, color: 'var(--color-primary)', fontSize: '1.1rem', whiteSpace: 'nowrap', marginLeft: '10px' }}>
                               {item.price} lei
@@ -264,6 +281,7 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                           <button 
                             onClick={() => addToCart(item)}
                             className="btn-primary" 
+                            aria-label={`Adaugă ${itemName} în coș`}
                             style={{ width: '100%', padding: '12px', fontSize: '0.85rem', fontWeight: 700, marginTop: '10px' }}
                           >
                             {t('menu.add_to_cart')}
@@ -281,6 +299,7 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                           }}>
                             <button 
                               onClick={() => removeFromCart(item.id)}
+                              aria-label={`Elimină o porție de ${itemName}`}
                               style={{ 
                                 background: 'white', 
                                 border: 'none', 
@@ -294,13 +313,14 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                                 cursor: 'pointer'
                               }}
                             >
-                              <Minus size={18} />
+                              <Minus size={18} aria-hidden="true" />
                             </button>
-                            <span style={{ color: 'white', fontWeight: 800, fontSize: '1.1rem', minWidth: '20px', textAlign: 'center' }}>
+                            <span style={{ color: 'white', fontWeight: 800, fontSize: '1.1rem', minWidth: '20px', textAlign: 'center' }} aria-label={`Cantitate: ${quantity}`}>
                               {quantity}
                             </span>
                             <button 
                               onClick={() => addToCart(item)}
+                              aria-label={`Mai adaugă o porție de ${itemName}`}
                               style={{ 
                                 background: 'white', 
                                 border: 'none', 
@@ -314,20 +334,20 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                                 cursor: 'pointer'
                               }}
                             >
-                              <Plus size={18} />
+                              <Plus size={18} aria-hidden="true" />
                             </button>
                           </div>
                         )}
                       </div>
-                    </div>
+                    </article>
                   );
                 })}
               </div>
-            </div>
+            </section>
           ))
         ) : (
-          <div style={{ textAlign: 'center', padding: 'var(--spacing-xl) 0', opacity: 0.5 }}>
-            <Search size={48} style={{ marginBottom: 'var(--spacing-sm)' }} />
+          <div style={{ textAlign: 'center', padding: 'var(--spacing-xl) 0', opacity: 0.5 }} role="status">
+            <Search size={48} style={{ marginBottom: 'var(--spacing-sm)' }} aria-hidden="true" />
             <h3>{t('menu.no_results')}</h3>
           </div>
         )}
@@ -337,6 +357,7 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
       {cart.length > 0 && !isCartOpen && (
         <button 
           onClick={() => setIsCartOpen(true)}
+          aria-label={`Vezi coșul de cumpărături, total ${total} LEI`}
           style={{
             position: 'fixed',
             bottom: '30px',
@@ -350,10 +371,11 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
             gap: '10px',
             boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
             zIndex: 1000,
-            cursor: 'pointer'
+            cursor: 'pointer',
+            border: 'none'
           }}
         >
-          <ShoppingBag size={20} />
+          <ShoppingBag size={20} aria-hidden="true" />
           <span style={{ fontWeight: 700 }}>{t('menu.view_order')} ({total} LEI)</span>
         </button>
       )}
@@ -367,6 +389,6 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
           transform: scale(0.98);
         }
       `}</style>
-    </div>
+    </main>
   );
 }
