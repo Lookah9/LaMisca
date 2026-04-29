@@ -28,6 +28,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'home.cta_title': 'Ești gata să guști tradiția?',
     'home.cta_subtitle': 'Alătură-te nouă pe terasă pentru o masă de neuitat lângă lac.',
     'home.cta_btn': 'DESCOPERĂ MENIUL',
+    'home.full_menu': 'MENIU ÎNTREG',
+    'home.featured_title': 'Grill. Pizza. Românește.',
     
     // Menu
     'menu.title': 'Meniul La Mișcă',
@@ -95,6 +97,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'home.cta_title': 'Ready to taste the tradition?',
     'home.cta_subtitle': 'Join us on the terrace for an unforgettable meal by the lake.',
     'home.cta_btn': 'DISCOVER THE MENU',
+    'home.full_menu': 'FULL MENU',
+    'home.featured_title': 'Grill. Pizza. Romanian.',
     
     // Menu
     'menu.title': 'La Mișcă Menu',
