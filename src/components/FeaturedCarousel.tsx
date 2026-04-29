@@ -1,19 +1,22 @@
 import { useState, useEffect, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, ShoppingBag, Plus, Minus, Utensils } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ShoppingBag, Plus, Minus, Utensils, Search, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { MenuItem, CartItem } from '../App';
+import { MenuItem, CartItem, Page } from '../App';
 import { MENU_DATA } from '../data/menuData';
 
 interface FeaturedCarouselProps {
   addToCart: (item: MenuItem) => void;
   removeFromCart: (id: number) => void;
   cart: CartItem[];
+  navigateTo: (page: Page) => void;
+  setMenuSearchQuery: (query: string) => void;
 }
 
-export default function FeaturedCarousel({ addToCart, removeFromCart, cart }: FeaturedCarouselProps) {
+export default function FeaturedCarousel({ addToCart, removeFromCart, cart, navigateTo, setMenuSearchQuery }: FeaturedCarouselProps) {
   const { t, language } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleItems, setVisibleItems] = useState(3);
+  const [localSearch, setLocalSearch] = useState("");
   
   // Select 10 random items with images if possible
   const featuredItems = useMemo(() => {
@@ -51,6 +54,12 @@ export default function FeaturedCarousel({ addToCart, removeFromCart, cart }: Fe
     return item ? item.quantity : 0;
   };
 
+  const handleSearchSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setMenuSearchQuery(localSearch);
+    navigateTo('menu');
+  };
+
   return (
     <section style={{ 
       padding: 'var(--spacing-xl) 0', 
@@ -59,8 +68,86 @@ export default function FeaturedCarousel({ addToCart, removeFromCart, cart }: Fe
     }}>
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-lg)' }}>
-          <h2 className="section-title" style={{ fontSize: '2.5rem' }}>{t('home.featured_title') || 'RECOMANDĂRILE NOASTRE'}</h2>
-          <div className="accent-border" style={{ margin: '0 auto var(--spacing-sm)' }}></div>
+          <h2 className="section-title" style={{ fontSize: '2.5rem', marginBottom: 'var(--spacing-md)' }}>{t('home.featured_title') || 'RECOMANDĂRILE NOASTRE'}</h2>
+          <div className="accent-border" style={{ margin: '0 auto var(--spacing-lg)' }}></div>
+          
+          {/* Search and Full Menu Row */}
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            gap: '15px', 
+            flexWrap: 'wrap',
+            maxWidth: '700px',
+            margin: '0 auto'
+          }}>
+            <form 
+              onSubmit={handleSearchSubmit}
+              style={{ 
+                position: 'relative', 
+                flex: '1', 
+                minWidth: '250px' 
+              }}
+            >
+              <Search 
+                size={18} 
+                style={{ 
+                  position: 'absolute', 
+                  left: '15px', 
+                  top: '50%', 
+                  transform: 'translateY(-50%)',
+                  color: 'var(--color-text-light)',
+                  opacity: 0.5
+                }} 
+              />
+              <input 
+                type="text"
+                placeholder={t('menu.search_placeholder') || 'Caută în meniu...'}
+                value={localSearch}
+                onChange={(e) => setLocalSearch(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '12px 15px 12px 45px',
+                  borderRadius: '30px',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  backgroundColor: 'white',
+                  fontSize: '0.95rem',
+                  outline: 'none',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                  transition: 'var(--transition)'
+                }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(0,0,0,0.1)'}
+              />
+            </form>
+            
+            <button 
+              onClick={() => {
+                setMenuSearchQuery("");
+                navigateTo('menu');
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '12px 25px',
+                borderRadius: '30px',
+                backgroundColor: 'var(--color-primary)',
+                color: 'white',
+                border: 'none',
+                fontWeight: 700,
+                fontSize: '0.95rem',
+                cursor: 'pointer',
+                boxShadow: '0 4px 12px rgba(230, 57, 70, 0.2)',
+                transition: 'var(--transition)',
+                whiteSpace: 'nowrap'
+              }}
+              className="full-menu-btn"
+            >
+              {t('home.full_menu') || 'TOT MENIUL'}
+              <ExternalLink size={16} />
+            </button>
+          </div>
         </div>
 
         <div style={{ position: 'relative' }}>
@@ -301,6 +388,11 @@ export default function FeaturedCarousel({ addToCart, removeFromCart, cart }: Fe
         .add-btn-small:hover {
           background-color: var(--color-primary) !important;
           transform: scale(1.1);
+        }
+        .full-menu-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 15px rgba(230, 57, 70, 0.3);
+          background-color: var(--color-primary-dark, #b51d29) !important;
         }
         @media (max-width: 640px) {
           .section-title { font-size: 2rem !important; }

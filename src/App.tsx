@@ -25,6 +25,7 @@ export interface CartItem {
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [menuSearchQuery, setMenuSearchQuery] = useState("");
   const [cart, setCart] = useState<CartItem[]>(() => {
     const savedCart = localStorage.getItem('laMiscaCart');
     if (savedCart) {
@@ -93,6 +94,7 @@ function App() {
             addToCart={addToCart} 
             removeFromCart={removeFromCart} 
             cart={cart} 
+            setMenuSearchQuery={setMenuSearchQuery}
           />
         ) : (
           <Menu 
@@ -102,6 +104,7 @@ function App() {
             addToCart={addToCart}
             removeFromCart={removeFromCart}
             clearCart={clearCart}
+            initialSearchQuery={menuSearchQuery}
           />
         )}
       </main>

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { ShoppingBag, Plus, Minus, Send, Phone as WhatsApp, X, Trash2, Search, Utensils } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { MenuItem, CartItem } from '../App';
@@ -34,12 +34,20 @@ interface MenuProps {
   addToCart: (item: MenuItem) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;
+  initialSearchQuery?: string;
 }
 
-export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, removeFromCart, clearCart }: MenuProps) {
+export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, removeFromCart, clearCart, initialSearchQuery = "" }: MenuProps) {
   const [activeCategory, setActiveCategory] = useState("Toate");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
   const { t, language } = useLanguage();
+
+  useEffect(() => {
+    if (initialSearchQuery) {
+      setSearchQuery(initialSearchQuery);
+      window.scrollTo(0, 0);
+    }
+  }, [initialSearchQuery]);
 
   const filteredItems = useMemo(() => {
     let items = MENU_DATA;

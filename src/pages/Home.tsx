@@ -10,16 +10,26 @@ interface HomeProps {
   addToCart: (item: MenuItem) => void;
   removeFromCart: (id: number) => void;
   cart: CartItem[];
+  setMenuSearchQuery: (query: string) => void;
 }
 
-export default function Home({ navigateTo, addToCart, removeFromCart, cart }: HomeProps) {
+export default function Home({ navigateTo, addToCart, removeFromCart, cart, setMenuSearchQuery }: HomeProps) {
   const { t } = useLanguage();
   return (
     <>
       <Hero navigateTo={navigateTo} />
       
       {/* Featured Items Carousel */}
-      <FeaturedCarousel addToCart={addToCart} removeFromCart={removeFromCart} cart={cart} />
+      <FeaturedCarousel 
+        addToCart={addToCart} 
+        removeFromCart={removeFromCart} 
+        cart={cart} 
+        navigateTo={navigateTo}
+        setMenuSearchQuery={setMenuSearchQuery}
+      />
+
+      {/* Location Section - Moved here per user request */}
+      <LocationSection />
       
       {/* Intro Section */}
       <section className="section" style={{ paddingBottom: 0 }}>
@@ -42,8 +52,6 @@ export default function Home({ navigateTo, addToCart, removeFromCart, cart }: Ho
       </section>
 
       <FeatureSections />
-
-      <LocationSection />
 
       {/* Atmosphere / CTA Section */}
       <section className="section" style={{ backgroundColor: 'var(--color-bg-dark)' }}>
