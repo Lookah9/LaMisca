@@ -31,26 +31,6 @@ export default function Home({ navigateTo, addToCart, removeFromCart, cart, setM
       {/* Location Section - Moved here per user request */}
       <LocationSection />
       
-      {/* Intro Section */}
-      <section className="section" style={{ paddingBottom: 0 }}>
-        <div className="container text-center">
-          <h3 style={{ 
-            fontFamily: 'var(--font-sans)', 
-            textTransform: 'uppercase', 
-            letterSpacing: '0.3em', 
-            fontSize: '0.9rem',
-            color: 'var(--color-primary)',
-            marginBottom: 'var(--spacing-sm)'
-          }}>
-            {t('home.welcome')}
-          </h3>
-          <h2 className="section-title" style={{ maxWidth: '800px', margin: '0 auto var(--spacing-md)' }}>
-            {t('home.intro')}
-          </h2>
-          <div className="accent-border" style={{ margin: '0 auto var(--spacing-lg)' }}></div>
-        </div>
-      </section>
-
       <FeatureSections />
 
       {/* Atmosphere / CTA Section */}

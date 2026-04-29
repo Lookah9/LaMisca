@@ -28,7 +28,8 @@ function FeatureRow({ title, subtitle, description, image, reverse }: FeatureRow
              fontSize: '1.1rem', 
              color: 'var(--color-text-light)', 
              marginBottom: 'var(--spacing-md)',
-             maxWidth: '500px'
+             maxWidth: '500px',
+             lineHeight: '1.6'
           }}>
             {description}
           </p>
@@ -55,13 +56,17 @@ function FeatureRow({ title, subtitle, description, image, reverse }: FeatureRow
 export default function FeatureSections() {
   const { t, language } = useLanguage();
   
+  const ourStoryDesc = language === 'ro' 
+    ? "La Mișcă este terasa de familie crescută la marginea Parcului Mogoșoaia, acolo unde plimbările lungi, aerul verde și pofta de mâncare caldă se întâlnesc firesc. Născută din dorința de a aduce în zonă un loc primitor, cu pizza coaptă pe loc, grătar încins și gusturi românești așezate la masă, La Mișcă păstrează farmecul unei opriri simple, bune, aproape de natură, făcută pentru familii, prieteni și oameni care vor să rămână puțin mai mult."
+    : "La Mișcă is the family terrace grown on the edge of Mogoșoaia Park, where long walks, green air, and a craving for warm food meet naturally. Born from the desire to bring a welcoming place to the area, with freshly baked pizza, a hot grill, and Romanian tastes served at the table, La Mișcă preserves the charm of a simple, good stop, close to nature, made for families, friends, and people who want to stay a little longer.";
+
   return (
     <section className="section">
       <FeatureRow 
-        subtitle={t('cat.grill')}
-        title={language === 'ro' ? "Foc, Fum și Suflet" : "Fire, Smoke, & Soul"}
-        description={language === 'ro' ? "Meșteșugul nostru începe cu flacăra. Bucăți de carne premium, condimentate simplu și fripte la perfecțiune pe jar încins. Un gust al tradiției în fiecare mușcătură." : "Our craft begins with the flame. Prime cuts of meat, seasoned with simplicity and grilled to perfection over open embers. A taste of tradition in every bite."}
-        image="images/Ceafa La Misca_converted.webp"
+        subtitle={language === 'ro' ? "Povestea Noastră" : "Our Story"}
+        title={language === 'ro' ? "La Mișcă" : "La Mișcă"}
+        description={ourStoryDesc}
+        image="images/LM istoric.png"
       />
       
       <FeatureRow 
