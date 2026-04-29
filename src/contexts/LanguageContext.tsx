@@ -46,6 +46,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'menu.total_order': 'TOTAL COMANDĂ',
     'menu.search_placeholder': 'Caută un preparat...',
     'menu.no_results': 'Niciun rezultat găsit pentru căutarea ta.',
+    'menu.back_to_cart': 'ÎNAPOI',
     
     // Categories
     'cat.all': 'TOATE',
@@ -112,6 +113,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'menu.total_order': 'TOTAL ORDER',
     'menu.search_placeholder': 'Search for a dish...',
     'menu.no_results': 'No results found for your search.',
+    'menu.back_to_cart': 'BACK',
     
     // Categories
     'cat.all': 'ALL',
