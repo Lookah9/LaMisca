@@ -103,117 +103,119 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
               <p>{t('menu.cart_empty')}</p>
             </div>
           ) : (
-            <>
-              <div style={{ marginBottom: 'var(--spacing-md)' }}>
-                {cart.map(i => (
-                  <div key={i.item.id} style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center',
-                    padding: '12px 0',
-                    borderBottom: '1px solid rgba(0,0,0,0.05)'
-                  }}>
-                    <div style={{ flex: 1 }}>
-                      <h4 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '2px' }}>
-                        {language === 'en' && i.item.nameEn ? i.item.nameEn : i.item.name}
-                      </h4>
-                      <span style={{ fontSize: '0.85rem', color: 'var(--color-primary)', fontWeight: 600 }}>{i.item.price} lei / buc</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '12px',
-                        backgroundColor: '#f5f5f5',
-                        padding: '4px 10px',
-                        borderRadius: '20px'
-                      }}>
-                        <button 
-                          onClick={() => removeFromCart(i.item.id)}
-                          style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', padding: '4px' }}
-                        >
-                          <Minus size={14} />
-                        </button>
-                        <span style={{ fontWeight: 800, minWidth: '15px', textAlign: 'center', fontSize: '0.9rem' }}>{i.quantity}</span>
-                        <button 
-                          onClick={() => addToCart(i.item)}
-                          style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', padding: '4px' }}
-                        >
-                          <Plus size={14} />
-                        </button>
-                      </div>
+            <div style={{ marginBottom: 'var(--spacing-md)' }}>
+              {cart.map(i => (
+                <div key={i.item.id} style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  padding: '12px 0',
+                  borderBottom: '1px solid rgba(0,0,0,0.05)'
+                }}>
+                  <div style={{ flex: 1 }}>
+                    <h4 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '2px' }}>
+                      {language === 'en' && i.item.nameEn ? i.item.nameEn : i.item.name}
+                    </h4>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--color-primary)', fontWeight: 600 }}>{i.item.price} lei / buc</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '12px',
+                      backgroundColor: '#f5f5f5',
+                      padding: '4px 10px',
+                      borderRadius: '20px'
+                    }}>
+                      <button 
+                        onClick={() => removeFromCart(i.item.id)}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', padding: '4px' }}
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <span style={{ fontWeight: 800, minWidth: '15px', textAlign: 'center', fontSize: '0.9rem' }}>{i.quantity}</span>
+                      <button 
+                        onClick={() => addToCart(i.item)}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', padding: '4px' }}
+                      >
+                        <Plus size={14} />
+                      </button>
                     </div>
                   </div>
-                ))}
-              </div>
-
-              {/* Customer Details Form */}
-              <div style={{ 
-                backgroundColor: 'rgba(0,0,0,0.02)', 
-                padding: 'var(--spacing-md)', 
-                borderRadius: '8px',
-                border: formError ? '1px solid #e11d48' : '1px solid #eee',
-                marginBottom: 'var(--spacing-md)'
-              }}>
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 800, marginBottom: 'var(--spacing-sm)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  {language === 'ro' ? 'Informații Livrare' : 'Delivery Information'}
-                </h3>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <input 
-                    type="text" 
-                    placeholder={t('menu.customer_name')}
-                    value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
-                    style={{
-                      padding: '12px',
-                      borderRadius: '6px',
-                      border: '1px solid #ddd',
-                      fontFamily: 'inherit',
-                      fontSize: '0.95rem'
-                    }}
-                  />
-                  <input 
-                    type="text" 
-                    placeholder={t('menu.customer_phone')}
-                    value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
-                    style={{
-                      padding: '12px',
-                      borderRadius: '6px',
-                      border: '1px solid #ddd',
-                      fontFamily: 'inherit',
-                      fontSize: '0.95rem'
-                    }}
-                  />
-                  <textarea 
-                    placeholder={t('menu.customer_address')}
-                    value={customerAddress}
-                    onChange={(e) => setCustomerAddress(e.target.value)}
-                    rows={2}
-                    style={{
-                      padding: '12px',
-                      borderRadius: '6px',
-                      border: '1px solid #ddd',
-                      fontFamily: 'inherit',
-                      fontSize: '0.95rem',
-                      resize: 'none'
-                    }}
-                  />
                 </div>
-                {formError && (
-                  <p style={{ color: '#e11d48', fontSize: '0.8rem', marginTop: '10px', fontWeight: 600 }}>
-                    {t('menu.required_fields')}
-                  </p>
-                )}
-              </div>
-            </>
+              ))}
+            </div>
           )}
         </div>
 
         {cart.length > 0 && (
           <div style={{ borderTop: '2px dashed #ddd', paddingTop: 'var(--spacing-md)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--spacing-md)' }}>
+            
+            {/* Customer Details Form - Moved here to be always visible */}
+            <div style={{ 
+              backgroundColor: 'rgba(0,0,0,0.03)', 
+              padding: '15px', 
+              borderRadius: '12px',
+              border: formError ? '1px solid #e11d48' : '1px solid rgba(0,0,0,0.05)',
+              marginBottom: '15px'
+            }}>
+              <h3 style={{ fontSize: '0.8rem', fontWeight: 800, marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-text)' }}>
+                {language === 'ro' ? 'Informații Livrare' : 'Delivery Information'}
+              </h3>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <input 
+                  type="text" 
+                  placeholder={t('menu.customer_name')}
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
+                  style={{
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid #ddd',
+                    fontFamily: 'inherit',
+                    fontSize: '0.9rem',
+                    backgroundColor: 'white'
+                  }}
+                />
+                <input 
+                  type="text" 
+                  placeholder={t('menu.customer_phone')}
+                  value={customerPhone}
+                  onChange={(e) => setCustomerPhone(e.target.value)}
+                  style={{
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid #ddd',
+                    fontFamily: 'inherit',
+                    fontSize: '0.9rem',
+                    backgroundColor: 'white'
+                  }}
+                />
+                <textarea 
+                  placeholder={t('menu.customer_address')}
+                  value={customerAddress}
+                  onChange={(e) => setCustomerAddress(e.target.value)}
+                  rows={2}
+                  style={{
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid #ddd',
+                    fontFamily: 'inherit',
+                    fontSize: '0.9rem',
+                    backgroundColor: 'white',
+                    resize: 'none'
+                  }}
+                />
+              </div>
+              {formError && (
+                <p style={{ color: '#e11d48', fontSize: '0.75rem', marginTop: '8px', fontWeight: 600 }}>
+                  {t('menu.required_fields')}
+                </p>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
               <span style={{ fontSize: '1.1rem', fontWeight: 800 }}>{t('menu.total_order')}</span>
               <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--color-primary)' }}>{total} LEI</span>
             </div>
@@ -253,7 +255,7 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
                 {t('menu.order_whatsapp')}
               </button>
             </div>
-            <p style={{ fontSize: '0.75rem', textAlign: 'center', marginTop: '15px', color: 'var(--color-text-light)' }}>
+            <p style={{ fontSize: '0.7rem', textAlign: 'center', marginTop: '12px', color: 'var(--color-text-light)' }}>
               {t('menu.whatsapp_redirect')}
             </p>
           </div>
