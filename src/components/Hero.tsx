@@ -13,8 +13,9 @@ export default function Hero({ navigateTo }: HeroProps) {
       width: '100%',
       position: 'relative',
       display: 'flex',
-      alignItems: 'center',
+      alignItems: 'flex-end', // Moved from center to bottom
       justifyContent: 'center',
+      paddingBottom: '10vh', // Space from the bottom
       overflow: 'hidden',
       backgroundColor: '#000'
     }}>
@@ -51,18 +52,18 @@ export default function Hero({ navigateTo }: HeroProps) {
         maxWidth: '700px'
       }}>
         <p style={{
-          fontSize: 'clamp(1.1rem, 2vw, 1.4rem)', // Reduced size to subtext format
+          fontSize: 'clamp(1rem, 1.8vw, 1.3rem)',
           lineHeight: '1.6',
-          margin: '0 auto var(--spacing-lg)',
-          fontWeight: 400, // Lighter weight
-          opacity: 0.95,
+          margin: '0 auto var(--spacing-md)',
+          fontWeight: 400,
+          opacity: 0.9,
           textShadow: '0 2px 4px rgba(0,0,0,0.5)',
           letterSpacing: '0.02em'
         }}>
           {t('hero.subtitle')}
         </p>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <button onClick={() => navigateTo('menu')} className="btn-primary" style={{ padding: '15px 40px', fontSize: '1.1rem', borderRadius: '50px' }}>
+          <button onClick={() => navigateTo('menu')} className="btn-primary" style={{ padding: '12px 35px', fontSize: '1rem', borderRadius: '50px' }}>
             {t('hero.cta')}
           </button>
         </div>
