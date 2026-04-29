@@ -1,4 +1,5 @@
 import { useLanguage } from '../contexts/LanguageContext';
+import { Page } from '../App';
 
 interface FeatureRowProps {
   title: string;
@@ -6,9 +7,13 @@ interface FeatureRowProps {
   description: string;
   image: string;
   reverse?: boolean;
+  buttonLabel?: string;
+  onButtonClick?: () => void;
+  showButton?: boolean;
 }
 
-function FeatureRow({ title, subtitle, description, image, reverse }: FeatureRowProps) {
+function FeatureRow({ title, subtitle, description, image, reverse, buttonLabel, onButtonClick, showButton = true }: FeatureRowProps) {
+  const { t } = useLanguage();
   return (
     <div className="container" style={{ marginBottom: 'var(--spacing-xl)' }}>
       <div className="grid-2" style={{ alignItems: 'center' }}>
@@ -33,7 +38,15 @@ function FeatureRow({ title, subtitle, description, image, reverse }: FeatureRow
           }}>
             {description}
           </p>
-          <button className="btn-outline">{useLanguage().t('hero.cta')}</button>
+          {showButton && (
+            <button 
+              className="btn-outline" 
+              onClick={onButtonClick}
+              style={{ padding: '12px 30px' }}
+            >
+              {buttonLabel || t('hero.cta')}
+            </button>
+          )}
         </div>
         <div style={{ 
           order: reverse ? 1 : 2,
@@ -53,12 +66,27 @@ function FeatureRow({ title, subtitle, description, image, reverse }: FeatureRow
   );
 }
 
-export default function FeatureSections() {
+interface FeatureSectionsProps {
+  navigateTo: (page: Page) => void;
+  setMenuSearchQuery: (query: string) => void;
+}
+
+export default function FeatureSections({ navigateTo, setMenuSearchQuery }: FeatureSectionsProps) {
   const { t, language } = useLanguage();
   
   const ourStoryDesc = language === 'ro' 
     ? "La Mișcă este terasa de familie crescută la marginea Parcului Mogoșoaia, acolo unde plimbările lungi, aerul verde și pofta de mâncare caldă se întâlnesc firesc. Născută din dorința de a aduce în zonă un loc primitor, cu pizza coaptă pe loc, grătar încins și gusturi românești așezate la masă, La Mișcă păstrează farmecul unei opriri simple, bune, aproape de natură, făcută pentru familii, prieteni și oameni care vor să rămână puțin mai mult."
     : "La Mișcă is the family terrace grown on the edge of Mogoșoaia Park, where long walks, green air, and a craving for warm food meet naturally. Born from the desire to bring a welcoming place to the area, with freshly baked pizza, a hot grill, and Romanian tastes served at the table, La Mișcă preserves the charm of a simple, good stop, close to nature, made for families, friends, and people who want to stay a little longer.";
+
+  const handlePizzaClick = () => {
+    setMenuSearchQuery("Pizza");
+    navigateTo('menu');
+  };
+
+  const handleOrderClick = () => {
+    setMenuSearchQuery("");
+    navigateTo('menu');
+  };
 
   return (
     <section className="section">
@@ -67,6 +95,7 @@ export default function FeatureSections() {
         title={language === 'ro' ? "La Mișcă" : "La Mișcă"}
         description={ourStoryDesc}
         image="images/LM istoric.png"
+        showButton={false}
       />
       
       <FeatureRow 
@@ -75,6 +104,8 @@ export default function FeatureSections() {
         description={language === 'ro' ? "Aluat întins manual, ingrediente oneste și căldura intensă a cuptorului nostru cu lemne. Aducem spiritul autentic al pizzaiolo în Mogoșoaia." : "Hand-stretched dough, honest ingredients, and the intense heat of our brick oven. We bring the authentic spirit of the pizzaiolo to Mogosoaia."}
         image="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=1000"
         reverse
+        buttonLabel={language === 'ro' ? "Pizza Noastră" : "Our Pizza"}
+        onButtonClick={handlePizzaClick}
       />
       
       <FeatureRow 
@@ -82,6 +113,7 @@ export default function FeatureSections() {
         title={language === 'ro' ? "Tradiție, Reinterpretată" : "Tradition, Reimagined"}
         description={language === 'ro' ? "Savoarea gustului de acasă. De la mezeluri artizanale la tocănițe gătite lent, celebrăm moștenirea culinară românească cu o notă modernă și de înaltă calitate." : "Savor the flavors of home. From artisanal cold cuts to slow-cooked stews, we celebrate Romanian culinary heritage with a modern, high-quality touch."}
         image="images/Muschi Vita Gorgonzola_converted.webp"
+        onButtonClick={handleOrderClick}
       />
     </section>
   );

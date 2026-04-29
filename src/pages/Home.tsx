@@ -31,7 +31,10 @@ export default function Home({ navigateTo, addToCart, removeFromCart, cart, setM
       {/* Location Section - Moved here per user request */}
       <LocationSection />
       
-      <FeatureSections />
+      <FeatureSections 
+        navigateTo={navigateTo} 
+        setMenuSearchQuery={setMenuSearchQuery} 
+      />
 
       {/* Atmosphere / CTA Section */}
       <section className="section" style={{ backgroundColor: 'var(--color-bg-dark)' }}>
