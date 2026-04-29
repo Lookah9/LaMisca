@@ -86,7 +86,7 @@ function App() {
         clearCart={clearCart}
       />
       
-      <main>
+      <main key={currentPage} className="page-transition">
         {currentPage === 'home' ? (
           <Home navigateTo={navigateTo} />
         ) : (
