@@ -64,8 +64,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'cat.daily': 'MENIUL ZILEI',
     
     // Location
-    'loc.title': 'Locația Noastră',
-    'loc.subtitle': 'Te așteptăm în inima naturii, pe malul lacului, pentru o experiență culinară de neuitat.',
+    'loc.title': 'După parc, la masă.',
+    'loc.subtitle': 'La doi pași de Parcul Mogoșoaia, La Mișcă e locul unde te oprești după plimbare, stai liniștit și comanzi ceva cald.',
     'loc.address': 'Adresă',
     'loc.hours': 'Program',
     'loc.contact': 'Contact',
@@ -130,8 +130,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'cat.daily': 'DAILY MENU',
     
     // Location
-    'loc.title': 'Our Location',
-    'loc.subtitle': 'We await you in the heart of nature, by the lake, for an unforgettable culinary experience.',
+    'loc.title': 'After the park, at the table.',
+    'loc.subtitle': 'Just steps away from Mogoșoaia Park, La Mișcă is the place where you stop after a walk, relax, and order something warm.',
     'loc.address': 'Address',
     'loc.hours': 'Hours',
     'loc.contact': 'Contact',
