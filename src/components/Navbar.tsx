@@ -1,5 +1,5 @@
 import { ShoppingBag, Menu as MenuIcon, X, Globe } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import type { Page } from '../App';
 
@@ -12,51 +12,17 @@ interface NavbarProps {
 
 export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const isTransparent = !isScrolled && currentPage === 'home';
-  
-  const navStyle: React.CSSProperties = {
-    padding: isScrolled ? '10px 0' : '20px 0',
-    backgroundColor: isScrolled ? 'var(--color-bg)' : (currentPage === 'home' ? 'transparent' : 'var(--color-bg)'),
-    borderBottom: isScrolled ? '1px solid rgba(0,0,0,0.1)' : '1px solid transparent',
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1000,
-    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-    backdropFilter: isScrolled ? 'blur(10px)' : 'none',
-    color: (isScrolled || currentPage !== 'home') ? 'var(--color-text)' : 'white'
-  };
-
-  const linkStyle = (active: boolean): React.CSSProperties => ({
-    fontWeight: active ? '700' : '500',
-    fontSize: '0.95rem',
-    textTransform: 'uppercase',
-    letterSpacing: '0.1em',
-    color: 'inherit',
-    borderBottom: active ? `2px solid ${isScrolled || currentPage !== 'home' ? 'var(--color-primary)' : 'white'}` : '2px solid transparent',
-    padding: '5px 0',
-    transition: 'var(--transition)'
-  });
-
   return (
-    <nav style={navStyle}>
+    <nav style={{
+      padding: 'var(--spacing-sm) 0',
+      backgroundColor: 'var(--color-bg)',
+      borderBottom: '1px solid rgba(0,0,0,0.05)',
+      position: 'sticky',
+      top: 0,
+      zIndex: 100
+    }}>
       <div className="container" style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -67,20 +33,17 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
           style={{
             cursor: 'pointer',
             display: 'flex',
-            alignItems: 'center',
-            transition: 'var(--transition)',
-            transform: isScrolled ? 'scale(0.85)' : 'scale(1)'
+            alignItems: 'center'
           }}
         >
           <img 
             src="images/logo.png" 
             alt="La Misca Logo" 
             style={{ 
-              height: '80px', 
+              height: '100px', 
               width: 'auto',
               objectFit: 'contain',
-              filter: (isScrolled || currentPage !== 'home') ? 'none' : 'brightness(0) invert(1)',
-              transition: 'var(--transition)'
+              margin: '-20px 0'
             }} 
           />
         </div>
@@ -89,13 +52,19 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
         <div style={{ display: 'flex', gap: 'var(--spacing-md)', alignItems: 'center' }} className="desktop-menu">
           <button 
             onClick={() => navigateTo('home')}
-            style={linkStyle(currentPage === 'home')}
+            style={{ 
+              fontWeight: currentPage === 'home' ? '600' : '400',
+              borderBottom: currentPage === 'home' ? '2px solid var(--color-primary)' : 'none'
+            }}
           >
             {t('nav.home')}
           </button>
           <button 
             onClick={() => navigateTo('menu')}
-            style={linkStyle(currentPage === 'menu')}
+            style={{ 
+              fontWeight: currentPage === 'menu' ? '600' : '400',
+              borderBottom: currentPage === 'menu' ? '2px solid var(--color-primary)' : 'none'
+            }}
           >
             {t('nav.menu')}
           </button>
@@ -107,9 +76,8 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               style={{ 
                 fontSize: '0.8rem', 
                 fontWeight: language === 'ro' ? 'bold' : 'normal',
-                opacity: language === 'ro' ? 1 : 0.6,
-                padding: '2px 5px',
-                color: 'inherit'
+                opacity: language === 'ro' ? 1 : 0.5,
+                padding: '2px 5px'
               }}
             >
               RO
@@ -120,15 +88,13 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               style={{ 
                 fontSize: '0.8rem', 
                 fontWeight: language === 'en' ? 'bold' : 'normal',
-                opacity: language === 'en' ? 1 : 0.6,
-                padding: '2px 5px',
-                color: 'inherit'
+                opacity: language === 'en' ? 1 : 0.5,
+                padding: '2px 5px'
               }}
             >
               EN
             </button>
           </div>
-          
           <div 
             onClick={onCartClick}
             style={{ 
@@ -136,11 +102,10 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               marginLeft: 'var(--spacing-sm)',
               cursor: 'pointer',
               display: 'flex',
-              alignItems: 'center',
-              color: 'inherit'
+              alignItems: 'center'
             }}
           >
-            <ShoppingBag size={22} />
+            <ShoppingBag size={24} />
             {cartCount > 0 && (
               <span style={{
                 position: 'absolute',
@@ -151,8 +116,7 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
                 fontSize: '0.7rem',
                 padding: '2px 6px',
                 borderRadius: '50%',
-                fontWeight: 'bold',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                fontWeight: 'bold'
               }}>
                 {cartCount}
               </span>
@@ -169,10 +133,7 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
       <style>{`
         @media (max-width: 768px) {
           .desktop-menu { display: none !important; }
-          .mobile-menu-btn { 
-            display: block !important; 
-            color: ${(isScrolled || currentPage !== 'home') ? 'var(--color-text)' : 'white'};
-          }
+          .mobile-menu-btn { display: block !important; }
         }
       `}</style>
     </nav>
