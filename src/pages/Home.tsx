@@ -11,9 +11,10 @@ interface HomeProps {
   removeFromCart: (id: number) => void;
   cart: CartItem[];
   setMenuSearchQuery: (query: string) => void;
+  setMenuActiveCategory: (category: string) => void;
 }
 
-export default function Home({ navigateTo, addToCart, removeFromCart, cart, setMenuSearchQuery }: HomeProps) {
+export default function Home({ navigateTo, addToCart, removeFromCart, cart, setMenuSearchQuery, setMenuActiveCategory }: HomeProps) {
   const { t } = useLanguage();
   return (
     <>
@@ -33,17 +34,26 @@ export default function Home({ navigateTo, addToCart, removeFromCart, cart, setM
       
       <FeatureSections 
         navigateTo={navigateTo} 
-        setMenuSearchQuery={setMenuSearchQuery} 
+        setMenuSearchQuery={setMenuSearchQuery}
+        setMenuActiveCategory={setMenuActiveCategory}
       />
 
       {/* Atmosphere / CTA Section */}
-      <section className="section" style={{ backgroundColor: 'var(--color-bg-dark)' }}>
+      <section className="section" style={{ backgroundColor: 'var(--color-bg-dark)' }} aria-label="Acțiune">
         <div className="container text-center">
           <h2 className="section-title">{t('home.cta_title')}</h2>
           <p style={{ marginBottom: 'var(--spacing-md)', fontSize: '1.2rem', color: 'var(--color-text-light)' }}>
             {t('home.cta_subtitle')}
           </p>
-          <button onClick={() => navigateTo('menu')} className="btn-primary">
+          <button 
+            onClick={() => {
+              setMenuActiveCategory("Toate");
+              setMenuSearchQuery("");
+              navigateTo('menu');
+            }} 
+            className="btn-primary"
+            aria-label={t('home.cta_btn')}
+          >
             {t('home.cta_btn')}
           </button>
         </div>

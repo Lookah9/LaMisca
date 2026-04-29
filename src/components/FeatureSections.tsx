@@ -71,9 +71,10 @@ function FeatureRow({ title, subtitle, description, image, reverse, buttonLabel,
 interface FeatureSectionsProps {
   navigateTo: (page: Page) => void;
   setMenuSearchQuery: (query: string) => void;
+  setMenuActiveCategory: (category: string) => void;
 }
 
-export default function FeatureSections({ navigateTo, setMenuSearchQuery }: FeatureSectionsProps) {
+export default function FeatureSections({ navigateTo, setMenuSearchQuery, setMenuActiveCategory }: FeatureSectionsProps) {
   const { t, language } = useLanguage();
   
   const ourStoryDesc = language === 'ro' 
@@ -81,11 +82,13 @@ export default function FeatureSections({ navigateTo, setMenuSearchQuery }: Feat
     : "La Mișcă is the family terrace grown on the edge of Mogoșoaia Park, where long walks, green air, and a craving for warm food meet naturally. Born from the desire to bring a welcoming place to the area, with freshly baked pizza, a hot grill, and Romanian tastes served at the table, La Mișcă preserves the charm of a simple, good stop, close to nature, made for families, friends, and people who want to stay a little longer.";
 
   const handlePizzaClick = () => {
-    setMenuSearchQuery("Pizza");
+    setMenuActiveCategory("Pizza");
+    setMenuSearchQuery(""); // Clear search to show the category
     navigateTo('menu');
   };
 
   const handleOrderClick = () => {
+    setMenuActiveCategory("Toate");
     setMenuSearchQuery("");
     navigateTo('menu');
   };

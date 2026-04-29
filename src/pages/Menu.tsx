@@ -35,15 +35,26 @@ interface MenuProps {
   removeFromCart: (id: number) => void;
   clearCart: () => void;
   initialSearchQuery?: string;
+  activeCategory: string;
+  setActiveCategory: (category: string) => void;
 }
 
-export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, removeFromCart, clearCart, initialSearchQuery = "" }: MenuProps) {
-  const [activeCategory, setActiveCategory] = useState("Toate");
+export default function Menu({ 
+  cart, 
+  isCartOpen, 
+  setIsCartOpen, 
+  addToCart, 
+  removeFromCart, 
+  clearCart, 
+  initialSearchQuery = "",
+  activeCategory,
+  setActiveCategory
+}: MenuProps) {
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
   const { t, language } = useLanguage();
 
   useEffect(() => {
-    if (initialSearchQuery) {
+    if (initialSearchQuery !== undefined) {
       setSearchQuery(initialSearchQuery);
       window.scrollTo(0, 0);
     }
@@ -158,6 +169,7 @@ export default function Menu({ cart, isCartOpen, setIsCartOpen, addToCart, remov
                 aria-controls={`panel-${cat}`}
                 onClick={() => {
                   setActiveCategory(cat);
+                  setSearchQuery(""); // Clear search when category is selected
                 }}
                 style={{
                   padding: '6px 16px',
