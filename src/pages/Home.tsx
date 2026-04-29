@@ -1,18 +1,25 @@
 import Hero from '../components/Hero';
 import FeatureSections from '../components/FeatureSections';
 import LocationSection from '../components/LocationSection';
+import FeaturedCarousel from '../components/FeaturedCarousel';
 import { useLanguage } from '../contexts/LanguageContext';
-import type { Page } from '../App';
+import { Page, MenuItem, CartItem } from '../App';
 
 interface HomeProps {
   navigateTo: (page: Page) => void;
+  addToCart: (item: MenuItem) => void;
+  removeFromCart: (id: number) => void;
+  cart: CartItem[];
 }
 
-export default function Home({ navigateTo }: HomeProps) {
+export default function Home({ navigateTo, addToCart, removeFromCart, cart }: HomeProps) {
   const { t } = useLanguage();
   return (
     <>
       <Hero navigateTo={navigateTo} />
+      
+      {/* Featured Items Carousel */}
+      <FeaturedCarousel addToCart={addToCart} removeFromCart={removeFromCart} cart={cart} />
       
       {/* Intro Section */}
       <section className="section" style={{ paddingBottom: 0 }}>

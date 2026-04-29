@@ -88,7 +88,12 @@ function App() {
       
       <main key={currentPage} className="page-transition">
         {currentPage === 'home' ? (
-          <Home navigateTo={navigateTo} />
+          <Home 
+            navigateTo={navigateTo} 
+            addToCart={addToCart} 
+            removeFromCart={removeFromCart} 
+            cart={cart} 
+          />
         ) : (
           <Menu 
             cart={cart}
