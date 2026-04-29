@@ -29,17 +29,53 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
       zIndex: 1000
     }}>
       <div className="container" style={{
-        display: 'flex',
-        justifyContent: 'space-between',
+        display: 'grid',
+        gridTemplateColumns: '1fr auto 1fr',
         alignItems: 'center'
       }}>
-        {/* Logo */}
+        {/* Left Side: Language Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '5px' }}>
+            <button 
+              onClick={() => setLanguage('ro')}
+              style={{ 
+                fontSize: '0.85rem', 
+                fontWeight: language === 'ro' ? 'bold' : 'normal',
+                color: language === 'ro' ? 'var(--color-primary)' : 'var(--color-text)',
+                opacity: language === 'ro' ? 1 : 0.6,
+                padding: '5px 8px',
+                transition: 'var(--transition)',
+                cursor: 'pointer'
+              }}
+            >
+              RO
+            </button>
+            <span style={{ opacity: 0.2, alignSelf: 'center' }}>|</span>
+            <button 
+              onClick={() => setLanguage('en')}
+              style={{ 
+                fontSize: '0.85rem', 
+                fontWeight: language === 'en' ? 'bold' : 'normal',
+                color: language === 'en' ? 'var(--color-primary)' : 'var(--color-text)',
+                opacity: language === 'en' ? 1 : 0.6,
+                padding: '5px 8px',
+                transition: 'var(--transition)',
+                cursor: 'pointer'
+              }}
+            >
+              EN
+            </button>
+          </div>
+        </div>
+
+        {/* Center Side: Logo */}
         <div 
           onClick={() => handleNavigate('home')}
           style={{
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             zIndex: 1001
           }}
         >
@@ -47,24 +83,25 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
             src="images/logo.png" 
             alt="La Misca Logo" 
             style={{ 
-              height: '100px', 
+              height: '80px', 
               width: 'auto',
               objectFit: 'contain',
-              margin: '-20px 0'
+              margin: '-15px 0'
             }} 
           />
         </div>
 
-        {/* Right side controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)' }}>
+        {/* Right Side: Menu + Cart */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 'var(--spacing-md)' }}>
           {/* Desktop Nav Links */}
           <div style={{ display: 'flex', gap: 'var(--spacing-md)', alignItems: 'center' }} className="desktop-menu">
             <button 
               onClick={() => handleNavigate('home')}
               style={{ 
-                fontWeight: currentPage === 'home' ? '600' : '400',
-                borderBottom: currentPage === 'home' ? '2px solid var(--color-primary)' : 'none',
-                color: 'var(--color-text)'
+                fontSize: '0.9rem',
+                fontWeight: currentPage === 'home' ? '700' : '500',
+                color: currentPage === 'home' ? 'var(--color-primary)' : 'var(--color-text)',
+                transition: 'var(--transition)'
               }}
             >
               {t('nav.home')}
@@ -72,40 +109,14 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
             <button 
               onClick={() => handleNavigate('menu')}
               style={{ 
-                fontWeight: currentPage === 'menu' ? '600' : '400',
-                borderBottom: currentPage === 'menu' ? '2px solid var(--color-primary)' : 'none',
-                color: 'var(--color-text)'
+                fontSize: '0.9rem',
+                fontWeight: currentPage === 'menu' ? '700' : '500',
+                color: currentPage === 'menu' ? 'var(--color-primary)' : 'var(--color-text)',
+                transition: 'var(--transition)'
               }}
             >
               {t('nav.menu')}
             </button>
-
-            {/* Desktop Language Toggle */}
-            <div style={{ display: 'flex', gap: '5px', marginLeft: 'var(--spacing-sm)' }}>
-              <button 
-                onClick={() => setLanguage('ro')}
-                style={{ 
-                  fontSize: '0.8rem', 
-                  fontWeight: language === 'ro' ? 'bold' : 'normal',
-                  opacity: language === 'ro' ? 1 : 0.5,
-                  padding: '2px 5px'
-                }}
-              >
-                RO
-              </button>
-              <span style={{ opacity: 0.3 }}>|</span>
-              <button 
-                onClick={() => setLanguage('en')}
-                style={{ 
-                  fontSize: '0.8rem', 
-                  fontWeight: language === 'en' ? 'bold' : 'normal',
-                  opacity: language === 'en' ? 1 : 0.5,
-                  padding: '2px 5px'
-                }}
-              >
-                EN
-              </button>
-            </div>
           </div>
 
           {/* Cart Button (Always visible) */}
@@ -116,21 +127,31 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              zIndex: 1001
+              zIndex: 1001,
+              padding: '8px',
+              backgroundColor: 'var(--color-bg-dark)',
+              borderRadius: '50%',
+              transition: 'var(--transition)'
             }}
+            className="cart-btn-nav"
           >
-            <ShoppingBag size={24} />
+            <ShoppingBag size={20} />
             {cartCount > 0 && (
               <span style={{
                 position: 'absolute',
-                top: '-8px',
-                right: '-8px',
+                top: '-5px',
+                right: '-5px',
                 backgroundColor: 'var(--color-primary)',
                 color: 'white',
-                fontSize: '0.7rem',
-                padding: '2px 6px',
+                fontSize: '0.65rem',
+                width: '18px',
+                height: '18px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 borderRadius: '50%',
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
               }}>
                 {cartCount}
               </span>
@@ -140,7 +161,7 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
           {/* Mobile Burger Button */}
           <div 
             className="mobile-menu-btn" 
-            style={{ display: 'none', zIndex: 1001, cursor: 'pointer' }} 
+            style={{ display: 'none', zIndex: 1001, cursor: 'pointer', padding: '5px' }} 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={28} /> : <MenuIcon size={28} />}
@@ -186,42 +207,37 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
             {t('nav.menu')}
           </button>
 
-          {/* Mobile Language Selector */}
-          <div style={{ display: 'flex', gap: '20px', marginTop: 'var(--spacing-md)' }}>
-            <button 
-              onClick={() => { setLanguage('ro'); setIsMobileMenuOpen(false); }}
-              style={{ 
-                fontSize: '1.2rem', 
-                fontWeight: language === 'ro' ? 'bold' : 'normal',
-                opacity: language === 'ro' ? 1 : 0.5,
-                border: language === 'ro' ? '2px solid var(--color-primary)' : '1px solid #ccc',
-                padding: '10px 20px',
-                borderRadius: '10px'
-              }}
-            >
-              ROMÂNĂ
-            </button>
-            <button 
-              onClick={() => { setLanguage('en'); setIsMobileMenuOpen(false); }}
-              style={{ 
-                fontSize: '1.2rem', 
-                fontWeight: language === 'en' ? 'bold' : 'normal',
-                opacity: language === 'en' ? 1 : 0.5,
-                border: language === 'en' ? '2px solid var(--color-primary)' : '1px solid #ccc',
-                padding: '10px 20px',
-                borderRadius: '10px'
-              }}
-            >
-              ENGLISH
-            </button>
-          </div>
+          {/* Logo in Mobile Menu Background */}
+          <img 
+            src="images/logo.png" 
+            alt="Logo Watermark" 
+            style={{ 
+              position: 'absolute',
+              bottom: '50px',
+              opacity: 0.05,
+              width: '200px',
+              pointerEvents: 'none'
+            }} 
+          />
         </div>
       )}
 
       <style>{`
-        @media (max-width: 768px) {
+        .desktop-menu button:hover {
+          color: var(--color-primary) !important;
+        }
+        .cart-btn-nav:hover {
+          background-color: #f0f0f0 !important;
+          transform: scale(1.05);
+        }
+        @media (max-width: 850px) {
           .desktop-menu { display: none !important; }
           .mobile-menu-btn { display: block !important; }
+        }
+        @media (max-width: 480px) {
+          nav .container {
+            grid-template-columns: 80px auto 80px !important;
+          }
         }
         
         @keyframes fadeIn {
