@@ -23,7 +23,7 @@ export default function Footer({ navigateTo }: FooterProps) {
           gap: 'var(--spacing-xl)',
           marginBottom: 'var(--spacing-lg)' 
         }}>
-          {/* Logo and Description */}
+          {/* Logo and Social links */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
             <div 
               onClick={() => navigateTo('home')}
@@ -40,10 +40,7 @@ export default function Footer({ navigateTo }: FooterProps) {
                 }} 
               />
             </div>
-            <p style={{ maxWidth: '350px', opacity: 0.7, marginBottom: 'var(--spacing-md)', lineHeight: '1.6' }}>
-              {t('footer.description')}
-            </p>
-            <div style={{ display: 'flex', gap: '15px' }}>
+            <div style={{ display: 'flex', gap: '15px', marginTop: '5px' }}>
               <a 
                 href="https://www.instagram.com/la.misca/" 
                 target="_blank" 
