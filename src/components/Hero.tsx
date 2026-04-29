@@ -13,15 +13,15 @@ export default function Hero({ navigateTo }: HeroProps) {
       width: '100%',
       position: 'relative',
       display: 'flex',
-      alignItems: 'flex-end', // Moved from center to bottom
+      alignItems: 'flex-end',
       justifyContent: 'center',
-      paddingBottom: '10vh', // Space from the bottom
+      paddingBottom: '10vh',
       overflow: 'hidden',
       backgroundColor: '#000'
     }}>
-      {/* Background Image */}
+      {/* Background Image - Reverted to original */}
       <img 
-        src="images/Sketched Hero.webp" 
+        src="images/hero.webp" 
         alt="La Misca Terrace Atmosphere"
         style={{
           position: 'absolute',
