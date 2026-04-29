@@ -76,7 +76,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'loc.hours_val': 'Luni - Duminică: 10:00 - 22:00',
     
     // Footer
-    'footer.description': 'Tradiție și gust pe malul lacului Mogoșoaia.',
+    'footer.description': 'La Mișcă este terasa de familie crescută la marginea Parcului Mogoșoaia, acolo unde plimbările lungi, aerul verde și pofta de mâncare caldă se întâlnesc firesc. Născută din dorința de a aduce în zonă un loc primitor, cu pizza coaptă pe loc, grătar încins și gusturi românești așezate la masă, La Mișcă păstrează farmecul unei opriri simple, bune, aproape de natură, făcută pentru familii, prieteni și oameni care vor să rămână puțin mai mult.',
     'footer.quick_links': 'Link-uri Rapide',
     'footer.rights': 'Toate drepturile rezervate.',
   },
@@ -145,7 +145,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'loc.hours_val': 'Monday - Sunday: 10:00 - 22:00',
     
     // Footer
-    'footer.description': 'Tradition and taste on the shores of Lake Mogoșoaia.',
+    'footer.description': 'La Mișcă is the family terrace grown on the edge of Mogoșoaia Park, where long walks, green air, and a craving for warm food meet naturally. Born from the desire to bring a welcoming place to the area, with freshly baked pizza, a hot grill, and Romanian tastes served at the table, La Mișcă preserves the charm of a simple, good stop, close to nature, made for families, friends, and people who want to stay a little longer.',
     'footer.quick_links': 'Quick Links',
     'footer.rights': 'All rights reserved.',
   }
