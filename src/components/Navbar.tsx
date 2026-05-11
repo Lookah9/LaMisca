@@ -42,7 +42,6 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
 
   return (
     <nav 
-    <nav 
       style={{
         padding: 'var(--spacing-sm) 0',
         backgroundColor: scrolled ? 'var(--color-bg)' : 'transparent',
