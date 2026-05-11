@@ -89,17 +89,8 @@ function App() {
       />
       
       <main key={currentPage} className="page-transition">
-        {currentPage === 'home' ? (
+        {currentPage === 'home' || currentPage === 'menu' ? (
           <Home 
-            navigateTo={navigateTo} 
-            addToCart={addToCart} 
-            removeFromCart={removeFromCart} 
-            cart={cart} 
-            setMenuSearchQuery={setMenuSearchQuery}
-            setMenuActiveCategory={setMenuActiveCategory}
-          />
-        ) : (
-          <Menu 
             cart={cart}
             isCartOpen={isCartOpen}
             setIsCartOpen={setIsCartOpen}
@@ -107,10 +98,12 @@ function App() {
             removeFromCart={removeFromCart}
             clearCart={clearCart}
             initialSearchQuery={menuSearchQuery}
+            setMenuSearchQuery={setMenuSearchQuery}
             activeCategory={menuActiveCategory}
             setActiveCategory={setMenuActiveCategory}
+            navigateTo={navigateTo}
           />
-        )}
+        ) : null}
       </main>
 
       <Footer navigateTo={navigateTo} />

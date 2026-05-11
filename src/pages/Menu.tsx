@@ -114,7 +114,7 @@ export default function Menu({
   };
 
   return (
-    <main style={{ minHeight: '80vh', padding: 'var(--spacing-xl) 0' }} aria-labelledby="menu-main-title">
+    <main style={{ minHeight: '80vh', padding: '0 0 var(--spacing-xl) 0' }} aria-labelledby="menu-main-title">
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-lg)' }}>
           <h1 id="menu-main-title" className="section-title">{t('menu.title')}</h1>
@@ -273,12 +273,12 @@ export default function Menu({
                     <article key={item.id} style={{
                       backgroundColor: 'white',
                       borderRadius: '12px',
-                      border: '1px solid rgba(0,0,0,0.05)',
+                      border: '1px solid rgba(188, 71, 73, 0.08)',
                       display: 'flex',
                       flexDirection: 'column',
                       overflow: 'hidden',
                       transition: 'var(--transition)',
-                      boxShadow: '0 4px 6px rgba(0,0,0,0.02)'
+                      boxShadow: '0 8px 24px rgba(188, 71, 73, 0.05)'
                     }} className="menu-item-card">
                       {/* Item Image */}
                       <div style={{ 
@@ -442,7 +442,7 @@ export default function Menu({
       <style>{`
         .menu-item-card:hover {
           transform: translateY(-5px);
-          box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+          box-shadow: 0 12px 32px rgba(188, 71, 73, 0.12) !important;
         }
         .btn-primary:active {
           transform: scale(0.98);

@@ -1,5 +1,5 @@
 import { ShoppingBag, Menu as MenuIcon, X, Globe } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import type { Page } from '../App';
 
@@ -12,22 +12,46 @@ interface NavbarProps {
 
 export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { language, setLanguage, t } = useLanguage();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleNavigate = (page: Page) => {
     navigateTo(page);
     setIsMobileMenuOpen(false);
+    if (page === 'menu') {
+      const menuSection = document.getElementById('menu-section');
+      if (menuSection) {
+        menuSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
+
+  const navTextColor = scrolled ? 'var(--color-text)' : 'white';
+  const textShadow = scrolled ? 'none' : '0 2px 4px rgba(0,0,0,0.5)';
 
   return (
     <nav 
+    <nav 
       style={{
         padding: 'var(--spacing-sm) 0',
-        backgroundColor: 'var(--color-bg)',
-        borderBottom: '1px solid rgba(0,0,0,0.05)',
-        position: 'sticky',
+        backgroundColor: scrolled ? 'var(--color-bg)' : 'transparent',
+        borderBottom: scrolled ? '1px solid rgba(0,0,0,0.05)' : 'none',
+        position: 'fixed',
+        width: '100%',
         top: 0,
-        zIndex: 1000
+        zIndex: 1000,
+        transition: 'background-color 0.3s ease, border-bottom 0.3s ease'
       }}
       aria-label="Navigație principală"
     >
@@ -46,8 +70,9 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               style={{ 
                 fontSize: '0.85rem', 
                 fontWeight: language === 'ro' ? 'bold' : 'normal',
-                color: language === 'ro' ? 'var(--color-primary)' : 'var(--color-text)',
-                opacity: language === 'ro' ? 1 : 0.6,
+                color: navTextColor,
+                textShadow: textShadow,
+                opacity: language === 'ro' ? 1 : 0.8,
                 padding: '5px 8px',
                 transition: 'var(--transition)',
                 cursor: 'pointer',
@@ -57,7 +82,7 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
             >
               RO
             </button>
-            <span style={{ opacity: 0.2, alignSelf: 'center' }} aria-hidden="true">|</span>
+            <span style={{ opacity: 0.5, alignSelf: 'center', color: navTextColor, textShadow }} aria-hidden="true">|</span>
             <button 
               onClick={() => setLanguage('en')}
               aria-label="Change language to English"
@@ -65,8 +90,9 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               style={{ 
                 fontSize: '0.85rem', 
                 fontWeight: language === 'en' ? 'bold' : 'normal',
-                color: language === 'en' ? 'var(--color-primary)' : 'var(--color-text)',
-                opacity: language === 'en' ? 1 : 0.6,
+                color: navTextColor,
+                textShadow: textShadow,
+                opacity: language === 'en' ? 1 : 0.8,
                 padding: '5px 8px',
                 transition: 'var(--transition)',
                 cursor: 'pointer',
@@ -113,13 +139,16 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               onClick={() => handleNavigate('home')}
               aria-current={currentPage === 'home' ? 'page' : undefined}
               style={{ 
-                fontSize: '0.9rem',
-                fontWeight: currentPage === 'home' ? '700' : '500',
-                color: currentPage === 'home' ? 'var(--color-primary)' : 'var(--color-text)',
+                fontSize: '0.95rem',
+                fontWeight: '600',
+                color: navTextColor,
+                textShadow: textShadow,
                 transition: 'var(--transition)',
                 background: 'none',
                 border: 'none',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em'
               }}
             >
               {t('nav.home')}
@@ -128,13 +157,16 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               onClick={() => handleNavigate('menu')}
               aria-current={currentPage === 'menu' ? 'page' : undefined}
               style={{ 
-                fontSize: '0.9rem',
-                fontWeight: currentPage === 'menu' ? '700' : '500',
-                color: currentPage === 'menu' ? 'var(--color-primary)' : 'var(--color-text)',
+                fontSize: '0.95rem',
+                fontWeight: '600',
+                color: navTextColor,
+                textShadow: textShadow,
                 transition: 'var(--transition)',
                 background: 'none',
                 border: 'none',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em'
               }}
             >
               {t('nav.menu')}
@@ -152,7 +184,9 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               alignItems: 'center',
               zIndex: 1001,
               padding: '8px',
-              backgroundColor: 'var(--color-bg-dark)',
+              backgroundColor: scrolled ? 'var(--color-bg-dark)' : 'rgba(255,255,255,0.2)',
+              color: navTextColor,
+              backdropFilter: scrolled ? 'none' : 'blur(5px)',
               borderRadius: '50%',
               transition: 'var(--transition)',
               border: 'none'
@@ -187,7 +221,16 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
             className="mobile-menu-btn" 
             aria-label={isMobileMenuOpen ? "Închide meniul" : "Deschide meniul"}
             aria-expanded={isMobileMenuOpen}
-            style={{ display: 'none', zIndex: 1001, cursor: 'pointer', padding: '5px', background: 'none', border: 'none' }} 
+            style={{ 
+              display: 'none', 
+              zIndex: 1001, 
+              cursor: 'pointer', 
+              padding: '5px', 
+              background: 'none', 
+              border: 'none',
+              color: isMobileMenuOpen ? 'var(--color-text)' : navTextColor,
+              textShadow: !isMobileMenuOpen ? textShadow : 'none'
+            }} 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={28} /> : <MenuIcon size={28} />}
