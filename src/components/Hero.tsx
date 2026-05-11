@@ -26,6 +26,7 @@ export default function Hero({ navigateTo }: HeroProps) {
       <img 
         src="images/hero.webp" 
         alt="Atmosfera de pe terasa La Mișcă"
+        // @ts-ignore - fetchpriority is not yet in React types
         fetchpriority="high"
         style={{
           position: 'absolute',
