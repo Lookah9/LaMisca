@@ -4,6 +4,7 @@ import Menu from './pages/Menu'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import CartDrawer from './components/CartDrawer'
+import BackToTop from './components/BackToTop'
 
 export type Page = 'home' | 'menu';
 
@@ -107,6 +108,7 @@ function App() {
       </main>
 
       <Footer navigateTo={navigateTo} />
+      <BackToTop />
     </div>
   )
 }

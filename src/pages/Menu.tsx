@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { ShoppingBag, Plus, Minus, Send, Phone as WhatsApp, X, Trash2, Search, Utensils, ChevronDown } from 'lucide-react';
+import { ShoppingBag, Plus, Minus, Send, Phone as WhatsApp, X, Trash2, Search, Utensils, ChevronDown, ArrowUp } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { MenuItem, CartItem } from '../App';
 import { MENU_DATA } from '../data/menuData';
@@ -66,6 +66,17 @@ export default function Menu({
     });
   };
 
+  const [showFilters, setShowFilters] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowFilters(window.scrollY > 150);
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   useEffect(() => {
     if (initialSearchQuery !== undefined) {
       setSearchQuery(initialSearchQuery);
@@ -114,17 +125,27 @@ export default function Menu({
   };
 
   return (
-    <main style={{ minHeight: '80vh', padding: '0 0 var(--spacing-xl) 0' }} aria-labelledby="menu-main-title">
-      <div className="container">
-        <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-lg)' }}>
-          <h1 id="menu-main-title" className="section-title">{t('menu.title')}</h1>
-          <p style={{ color: 'var(--color-text-light)', marginBottom: 'var(--spacing-md)' }}>
-            {t('menu.subtitle')} Telefon: +40 727 783 800
-          </p>
-
+    <main style={{ minHeight: '80vh', padding: '0 0 var(--spacing-xl) 0', marginTop: '-15vh', position: 'relative', zIndex: 2 }} aria-labelledby="menu-main-title">
+      
+      {/* Fixed Header for Filters */}
+      <div style={{
+        position: 'fixed',
+        top: '60px', /* Adjust based on navbar height */
+        left: 0,
+        width: '100%',
+        zIndex: 900,
+        backgroundColor: 'var(--color-bg)',
+        padding: '15px 0',
+        borderBottom: '1px solid rgba(0,0,0,0.05)',
+        transform: showFilters ? 'translateY(0)' : 'translateY(-100%)',
+        opacity: showFilters ? 1 : 0,
+        visibility: showFilters ? 'visible' : 'hidden',
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+      }}>
+        <div className="container">
           {/* Search Bar */}
           <div style={{ 
-            maxWidth: '500px', 
+            maxWidth: '600px', 
             margin: '0 auto var(--spacing-md)',
             position: 'relative'
           }}>
@@ -148,11 +169,11 @@ export default function Menu({
               aria-label="Caută produse în meniu"
               style={{
                 width: '100%',
-                padding: '15px 15px 15px 45px',
+                padding: '12px 15px 12px 45px',
                 borderRadius: '30px',
                 border: '1px solid rgba(0,0,0,0.1)',
                 backgroundColor: 'white',
-                fontSize: '1rem',
+                fontSize: '0.95rem',
                 outline: 'none',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                 transition: 'var(--transition)'
@@ -167,12 +188,17 @@ export default function Menu({
             style={{ 
               display: 'flex', 
               justifyContent: 'center', 
-              gap: 'var(--spacing-xs)', 
-              flexWrap: 'wrap',
-              marginBottom: 'var(--spacing-md)'
+              gap: '8px', 
+              flexWrap: 'nowrap',
+              overflowX: 'auto',
+              paddingBottom: '5px',
+              WebkitOverflowScrolling: 'touch',
+              scrollbarWidth: 'none', /* Firefox */
+              msOverflowStyle: 'none' /* IE/Edge */
             }}
             role="tablist"
             aria-label="Categorii meniu"
+            className="hide-scrollbar"
           >
             {CATEGORIES.map(cat => (
               <button
@@ -187,12 +213,13 @@ export default function Menu({
                 style={{
                   padding: '6px 16px',
                   borderRadius: '20px',
-                  border: `1px solid ${activeCategory === cat ? 'var(--color-primary)' : '#ddd'}`,
+                  border: `1px solid ${activeCategory === cat ? 'var(--color-primary)' : 'rgba(0,0,0,0.1)'}`,
                   backgroundColor: activeCategory === cat ? 'var(--color-primary)' : 'white',
                   color: activeCategory === cat ? 'white' : 'var(--color-text)',
                   fontSize: '0.85rem',
                   fontWeight: 600,
                   cursor: 'pointer',
+                  whiteSpace: 'nowrap',
                   transition: 'var(--transition)'
                 }}
               >
@@ -201,6 +228,9 @@ export default function Menu({
             ))}
           </div>
         </div>
+      </div>
+
+      <div className="container">
 
         {/* Menu Sections */}
         {groupedItems.length > 0 ? (
@@ -446,6 +476,9 @@ export default function Menu({
         }
         .btn-primary:active {
           transform: scale(0.98);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
     </main>

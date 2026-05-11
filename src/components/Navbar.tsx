@@ -125,7 +125,9 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               height: '80px', 
               width: 'auto',
               objectFit: 'contain',
-              margin: '-15px 0'
+              margin: '-15px 0',
+              filter: scrolled ? 'none' : 'brightness(0) invert(1)',
+              transition: 'filter 0.3s ease'
             }} 
           />
         </div>

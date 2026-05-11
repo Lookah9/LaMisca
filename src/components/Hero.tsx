@@ -83,43 +83,6 @@ export default function Hero({ navigateTo }: HeroProps) {
         pointerEvents: 'none'
       }} aria-hidden="true"></div>
       
-      <div className="container" style={{
-        position: 'relative',
-        zIndex: 2,
-        color: 'var(--color-bg)',
-        textAlign: 'center',
-        maxWidth: '700px'
-      }}>
-        <p style={{
-          fontSize: 'clamp(1rem, 1.8vw, 1.3rem)',
-          lineHeight: '1.6',
-          margin: '0 auto var(--spacing-md)',
-          fontWeight: 400,
-          opacity: 1, // Full opacity for better contrast/accessibility
-          textShadow: '0 2px 4px rgba(0,0,0,0.8)',
-          letterSpacing: '0.02em'
-        }}>
-          {t('hero.subtitle')}
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <button 
-            onClick={() => {
-              const menuSection = document.getElementById('menu-section');
-              if (menuSection) menuSection.scrollIntoView({ behavior: 'smooth' });
-            }} 
-            className="btn-primary" 
-            aria-label={t('home.cta_btn') || "Vezi meniul nostru"}
-            style={{ 
-              padding: '12px 35px', 
-              fontSize: '1rem', 
-              borderRadius: '50px',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.3)' 
-            }}
-          >
-            {t('hero.cta')}
-          </button>
-        </div>
-      </div>
     </section>
   );
 }
