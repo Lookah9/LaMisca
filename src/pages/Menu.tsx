@@ -67,6 +67,7 @@ export default function Menu({
   };
 
   const [showFilters, setShowFilters] = useState(false);
+  const [navbarHeight, setNavbarHeight] = useState(80);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,6 +76,18 @@ export default function Menu({
     window.addEventListener('scroll', handleScroll);
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const updateNavbarHeight = () => {
+      const header = document.getElementById('main-navbar');
+      if (header) {
+        setNavbarHeight(header.offsetHeight);
+      }
+    };
+    updateNavbarHeight();
+    window.addEventListener('resize', updateNavbarHeight);
+    return () => window.removeEventListener('resize', updateNavbarHeight);
   }, []);
 
   useEffect(() => {
@@ -130,7 +143,7 @@ export default function Menu({
       {/* Fixed Header for Filters */}
       <div style={{
         position: 'fixed',
-        top: '90px', /* Adjust based on navbar height */
+        top: `${navbarHeight}px`,
         left: 0,
         width: '100%',
         zIndex: 900,
