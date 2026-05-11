@@ -221,7 +221,7 @@ export default function Menu({
 
               <div style={{ 
                 display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
+                gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', 
                 gap: 'var(--spacing-md)' 
               }}>
                 {group.items.map(item => {
@@ -290,64 +290,67 @@ export default function Menu({
                         </div>
                         
                         {quantity === 0 ? (
-                          <button 
-                            onClick={() => addToCart(item)}
-                            className="btn-primary" 
-                            aria-label={`Adaugă ${itemName} în coș`}
-                            style={{ width: '100%', padding: '12px', fontSize: '0.85rem', fontWeight: 700, marginTop: '10px' }}
-                          >
-                            {t('menu.add_to_cart')}
-                          </button>
-                        ) : (
-                          <div style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            justifyContent: 'center', 
-                            gap: '20px',
-                            marginTop: '10px',
-                            backgroundColor: 'var(--color-primary)',
-                            borderRadius: '30px',
-                            padding: '8px'
-                          }}>
-                            <button 
-                              onClick={() => removeFromCart(item.id)}
-                              aria-label={`Elimină o porție de ${itemName}`}
-                              style={{ 
-                                background: 'white', 
-                                border: 'none', 
-                                borderRadius: '50%', 
-                                width: '28px', 
-                                height: '28px', 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                justifyContent: 'center',
-                                color: 'var(--color-primary)',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              <Minus size={18} aria-hidden="true" />
-                            </button>
-                            <span style={{ color: 'white', fontWeight: 800, fontSize: '1.1rem', minWidth: '20px', textAlign: 'center' }} aria-label={`Cantitate: ${quantity}`}>
-                              {quantity}
-                            </span>
+                          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'auto', paddingTop: '10px' }}>
                             <button 
                               onClick={() => addToCart(item)}
-                              aria-label={`Mai adaugă o porție de ${itemName}`}
-                              style={{ 
-                                background: 'white', 
-                                border: 'none', 
-                                borderRadius: '50%', 
-                                width: '28px', 
-                                height: '28px', 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                justifyContent: 'center',
-                                color: 'var(--color-primary)',
-                                cursor: 'pointer'
-                              }}
+                              className="btn-primary" 
+                              aria-label={`Adaugă ${itemName} în coș`}
+                              style={{ padding: '8px 24px', borderRadius: '30px', fontSize: '0.85rem', fontWeight: 700 }}
                             >
-                              <Plus size={18} aria-hidden="true" />
+                              {t('menu.add_to_cart')}
                             </button>
+                          </div>
+                        ) : (
+                          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'auto', paddingTop: '10px' }}>
+                            <div style={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center', 
+                              gap: '15px',
+                              backgroundColor: 'var(--color-primary)',
+                              borderRadius: '30px',
+                              padding: '6px 10px'
+                            }}>
+                              <button 
+                                onClick={() => removeFromCart(item.id)}
+                                aria-label={`Elimină o porție de ${itemName}`}
+                                style={{ 
+                                  background: 'white', 
+                                  border: 'none', 
+                                  borderRadius: '50%', 
+                                  width: '26px', 
+                                  height: '26px', 
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  justifyContent: 'center',
+                                  color: 'var(--color-primary)',
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                <Minus size={16} aria-hidden="true" />
+                              </button>
+                              <span style={{ color: 'white', fontWeight: 800, fontSize: '1.05rem', minWidth: '16px', textAlign: 'center' }} aria-label={`Cantitate: ${quantity}`}>
+                                {quantity}
+                              </span>
+                              <button 
+                                onClick={() => addToCart(item)}
+                                aria-label={`Mai adaugă o porție de ${itemName}`}
+                                style={{ 
+                                  background: 'white', 
+                                  border: 'none', 
+                                  borderRadius: '50%', 
+                                  width: '26px', 
+                                  height: '26px', 
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  justifyContent: 'center',
+                                  color: 'var(--color-primary)',
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                <Plus size={16} aria-hidden="true" />
+                              </button>
+                            </div>
                           </div>
                         )}
                       </div>

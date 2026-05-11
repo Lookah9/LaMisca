@@ -233,20 +233,19 @@ export default function FeaturedCarousel({ addToCart, removeFromCart, cart, navi
                           {language === 'en' && item.descriptionEn ? item.descriptionEn : item.description}
                         </p>
                         
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 'auto', paddingTop: '10px' }}>
                           {getItemQuantity(item.id) === 0 ? (
                             <button 
                               onClick={() => addToCart(item)}
                               aria-label={`Adaugă ${item.name} în coș`}
                               className="btn-primary"
                               style={{ 
-                                width: '100%', 
                                 display: 'flex', 
                                 alignItems: 'center', 
                                 justifyContent: 'center', 
-                                gap: '8px',
-                                padding: '10px',
-                                borderRadius: '10px',
+                                gap: '6px',
+                                padding: '8px 24px',
+                                borderRadius: '30px',
                                 fontSize: '0.85rem'
                               }}
                             >
@@ -257,26 +256,48 @@ export default function FeaturedCarousel({ addToCart, removeFromCart, cart, navi
                             <div style={{ 
                               display: 'flex', 
                               alignItems: 'center', 
-                              justifyContent: 'space-between',
-                              width: '100%',
-                              backgroundColor: '#f5f5f5',
-                              padding: '5px 15px',
-                              borderRadius: '10px'
+                              justifyContent: 'center',
+                              gap: '15px',
+                              backgroundColor: 'var(--color-primary)',
+                              padding: '6px 10px',
+                              borderRadius: '30px'
                             }}>
                               <button 
                                 onClick={() => removeFromCart(item.id)}
                                 aria-label={`Elimină o porție de ${item.name}`}
-                                style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex' }}
+                                style={{ 
+                                  background: 'white', 
+                                  border: 'none', 
+                                  borderRadius: '50%', 
+                                  width: '26px', 
+                                  height: '26px', 
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  justifyContent: 'center',
+                                  color: 'var(--color-primary)',
+                                  cursor: 'pointer'
+                                }}
                               >
-                                <Minus size={18} />
+                                <Minus size={16} />
                               </button>
-                              <span style={{ fontWeight: 800 }}>{getItemQuantity(item.id)}</span>
+                              <span style={{ color: 'white', fontWeight: 800, fontSize: '1.05rem', minWidth: '16px', textAlign: 'center' }}>{getItemQuantity(item.id)}</span>
                               <button 
                                 onClick={() => addToCart(item)}
                                 aria-label={`Mai adaugă o porție de ${item.name}`}
-                                style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex' }}
+                                style={{ 
+                                  background: 'white', 
+                                  border: 'none', 
+                                  borderRadius: '50%', 
+                                  width: '26px', 
+                                  height: '26px', 
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  justifyContent: 'center',
+                                  color: 'var(--color-primary)',
+                                  cursor: 'pointer'
+                                }}
                               >
-                                <Plus size={18} />
+                                <Plus size={16} />
                               </button>
                             </div>
                           )}
