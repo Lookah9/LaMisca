@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { ShoppingBag, Plus, Minus, Send, Phone as WhatsApp, X, Trash2, Search, Utensils } from 'lucide-react';
+import { ShoppingBag, Plus, Minus, Send, Phone as WhatsApp, X, Trash2, Search, Utensils, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { MenuItem, CartItem } from '../App';
 import { MENU_DATA } from '../data/menuData';
@@ -51,7 +51,20 @@ export default function Menu({
   setActiveCategory
 }: MenuProps) {
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
+  const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set());
   const { t, language } = useLanguage();
+
+  const toggleCategory = (category: string) => {
+    setCollapsedCategories(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(category)) {
+        newSet.delete(category);
+      } else {
+        newSet.add(category);
+      }
+      return newSet;
+    });
+  };
 
   useEffect(() => {
     if (initialSearchQuery !== undefined) {
@@ -199,32 +212,61 @@ export default function Menu({
               style={{ marginBottom: 'var(--spacing-xl)' }}
               aria-labelledby={`heading-${group.category}`}
             >
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '20px', 
-                marginBottom: 'var(--spacing-md)',
-                borderBottom: '1px solid rgba(0,0,0,0.1)',
-                paddingBottom: '10px'
-              }}>
-                <h2 id={`heading-${group.category}`} style={{ 
-                  fontSize: '1.8rem', 
-                  fontWeight: 800, 
-                  textTransform: 'uppercase', 
-                  letterSpacing: '0.1em',
-                  color: 'var(--color-text)'
-                }}>
-                  {t(CATEGORY_MAP[group.category])}
-                </h2>
+              <div 
+                onClick={() => toggleCategory(group.category)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleCategory(group.category); }}
+                role="button"
+                tabIndex={0}
+                aria-expanded={!collapsedCategories.has(group.category)}
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '20px', 
+                  marginBottom: 'var(--spacing-md)',
+                  borderBottom: '1px solid rgba(0,0,0,0.1)',
+                  paddingBottom: '10px',
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <h2 id={`heading-${group.category}`} style={{ 
+                    fontSize: '1.8rem', 
+                    fontWeight: 800, 
+                    textTransform: 'uppercase', 
+                    letterSpacing: '0.1em',
+                    color: 'var(--color-text)',
+                    margin: 0
+                  }}>
+                    {t(CATEGORY_MAP[group.category])}
+                  </h2>
+                  <ChevronDown 
+                    size={24} 
+                    style={{ 
+                      color: 'var(--color-primary)',
+                      transform: collapsedCategories.has(group.category) ? 'rotate(-90deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                    }} 
+                  />
+                </div>
                 <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-primary)', opacity: 0.3 }} aria-hidden="true"></div>
               </div>
 
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', 
-                gap: 'var(--spacing-md)' 
+              <div style={{
+                display: 'grid',
+                gridTemplateRows: collapsedCategories.has(group.category) ? '0fr' : '1fr',
+                transition: 'grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
               }}>
-                {group.items.map(item => {
+                <div style={{ overflow: 'hidden' }}>
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', 
+                    gap: 'var(--spacing-md)',
+                    padding: '10px 5px 20px 5px', // prevent clipping of shadows/transforms
+                    opacity: collapsedCategories.has(group.category) ? 0 : 1,
+                    transition: 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}>
+                    {group.items.map(item => {
                   const quantity = getItemQuantity(item.id);
                   const itemName = language === 'en' && item.nameEn ? item.nameEn : item.name;
                   return (
@@ -357,6 +399,8 @@ export default function Menu({
                     </article>
                   );
                 })}
+                  </div>
+                </div>
               </div>
             </section>
           ))
