@@ -125,7 +125,7 @@ export default function Menu({
   };
 
   return (
-    <main style={{ minHeight: '80vh', padding: '0 0 var(--spacing-xl) 0', marginTop: '-15vh', position: 'relative', zIndex: 2 }} aria-labelledby="menu-main-title">
+    <main style={{ minHeight: '80vh', padding: 'var(--spacing-xl) 0', position: 'relative', zIndex: 2 }} aria-labelledby="menu-main-title">
       
       {/* Fixed Header for Filters */}
       <div style={{
@@ -191,7 +191,7 @@ export default function Menu({
               gap: '8px', 
               flexWrap: 'nowrap',
               overflowX: 'auto',
-              paddingBottom: '5px',
+              padding: '0 20px 5px 20px',
               WebkitOverflowScrolling: 'touch',
               scrollbarWidth: 'none', /* Firefox */
               msOverflowStyle: 'none' /* IE/Edge */
@@ -207,8 +207,20 @@ export default function Menu({
                 aria-selected={activeCategory === cat}
                 aria-controls={`panel-${cat}`}
                 onClick={() => {
-                  setActiveCategory(cat);
+                  if (activeCategory === cat) {
+                    setActiveCategory("Toate");
+                  } else {
+                    setActiveCategory(cat);
+                  }
                   setSearchQuery(""); // Clear search when category is selected
+                  // Scroll back to top of menu
+                  const menuSection = document.getElementById('menu-section');
+                  if (menuSection) {
+                    const y = menuSection.getBoundingClientRect().top + window.scrollY - 130;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                  } else {
+                    window.scrollTo({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+                  }
                 }}
                 style={{
                   padding: '6px 16px',
@@ -230,8 +242,11 @@ export default function Menu({
         </div>
       </div>
 
-      <div className="container">
-
+      <div className="container" style={{
+        opacity: showFilters ? 1 : 0,
+        transform: showFilters ? 'translateY(0)' : 'translateY(40px)',
+        transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
+      }}>
         {/* Menu Sections */}
         {groupedItems.length > 0 ? (
           groupedItems.map(group => (
@@ -253,8 +268,6 @@ export default function Menu({
                   alignItems: 'center', 
                   gap: '20px', 
                   marginBottom: 'var(--spacing-md)',
-                  borderBottom: '1px solid rgba(0,0,0,0.1)',
-                  paddingBottom: '10px',
                   cursor: 'pointer',
                   userSelect: 'none'
                 }}
@@ -279,7 +292,6 @@ export default function Menu({
                     }} 
                   />
                 </div>
-                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-primary)', opacity: 0.3 }} aria-hidden="true"></div>
               </div>
 
               <div style={{
