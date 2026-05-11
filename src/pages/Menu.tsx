@@ -125,12 +125,12 @@ export default function Menu({
   };
 
   return (
-    <main style={{ minHeight: '80vh', padding: 'var(--spacing-xl) 0', position: 'relative', zIndex: 2 }} aria-labelledby="menu-main-title">
+    <main style={{ minHeight: '80vh', padding: '0 0 var(--spacing-xl) 0', marginTop: '-15vh', position: 'relative', zIndex: 2 }} aria-labelledby="menu-main-title">
       
       {/* Fixed Header for Filters */}
       <div style={{
         position: 'fixed',
-        top: '60px', /* Adjust based on navbar height */
+        top: '90px', /* Adjust based on navbar height */
         left: 0,
         width: '100%',
         zIndex: 900,
@@ -189,16 +189,11 @@ export default function Menu({
               display: 'flex', 
               justifyContent: 'center', 
               gap: '8px', 
-              flexWrap: 'nowrap',
-              overflowX: 'auto',
-              padding: '0 20px 5px 20px',
-              WebkitOverflowScrolling: 'touch',
-              scrollbarWidth: 'none', /* Firefox */
-              msOverflowStyle: 'none' /* IE/Edge */
+              flexWrap: 'wrap',
+              padding: '0 0 5px 0'
             }}
             role="tablist"
             aria-label="Categorii meniu"
-            className="hide-scrollbar"
           >
             {CATEGORIES.map(cat => (
               <button
@@ -242,14 +237,10 @@ export default function Menu({
         </div>
       </div>
 
-      <div className="container" style={{
-        opacity: showFilters ? 1 : 0,
-        transform: showFilters ? 'translateY(0)' : 'translateY(40px)',
-        transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
-      }}>
+      <div className="container">
         {/* Menu Sections */}
         {groupedItems.length > 0 ? (
-          groupedItems.map(group => (
+          groupedItems.map((group, index) => (
             <section 
               key={group.category} 
               id={`panel-${group.category}`}
@@ -264,7 +255,7 @@ export default function Menu({
                 tabIndex={0}
                 aria-expanded={!collapsedCategories.has(group.category)}
                 style={{ 
-                  display: 'flex', 
+                  display: index === 0 ? 'none' : 'flex', 
                   alignItems: 'center', 
                   gap: '20px', 
                   marginBottom: 'var(--spacing-md)',
