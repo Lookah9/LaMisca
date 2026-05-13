@@ -27,26 +27,27 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
   const handleNavigate = (page: Page) => {
     navigateTo(page);
     setIsMobileMenuOpen(false);
-    if (page === 'menu') {
-      const menuSection = document.getElementById('menu-section');
-      if (menuSection) {
-        menuSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    
+    // Smooth scroll for anchors if needed, but here we navigate to a new page/state
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const navTextColor = scrolled ? 'var(--color-text)' : 'white';
-  const textShadow = scrolled ? 'none' : '0 2px 4px rgba(0,0,0,0.5)';
+  const isHome = currentPage === 'home' || currentPage === 'menu';
+  const showImmersive = isHome && !scrolled;
+
+  const navTextColor = showImmersive ? 'white' : 'var(--color-text)';
+  const textShadow = showImmersive ? '0 2px 4px rgba(0,0,0,0.5)' : 'none';
+  const navBgColor = showImmersive ? 'transparent' : 'var(--color-bg)';
+  const navBorder = showImmersive ? 'none' : '1px solid rgba(0,0,0,0.05)';
+  const logoFilter = showImmersive ? 'brightness(0) invert(1)' : 'none';
 
   return (
     <nav 
       id="main-navbar"
       style={{
         padding: 'var(--spacing-sm) 0',
-        backgroundColor: scrolled ? 'var(--color-bg)' : 'transparent',
-        borderBottom: scrolled ? '1px solid rgba(0,0,0,0.05)' : 'none',
+        backgroundColor: navBgColor,
+        borderBottom: navBorder,
         position: 'fixed',
         width: '100%',
         top: 0,
@@ -127,7 +128,7 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               width: 'auto',
               objectFit: 'contain',
               margin: '-15px 0',
-              filter: scrolled ? 'none' : 'brightness(0) invert(1)',
+              filter: logoFilter,
               transition: 'filter 0.3s ease'
             }} 
           />
@@ -156,8 +157,8 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
               {t('nav.home')}
             </button>
             <button 
-              onClick={() => handleNavigate('menu')}
-              aria-current={currentPage === 'menu' ? 'page' : undefined}
+              onClick={() => handleNavigate('contact')}
+              aria-current={currentPage === 'contact' ? 'page' : undefined}
               style={{ 
                 fontSize: '0.95rem',
                 fontWeight: '600',
@@ -171,7 +172,7 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
                 letterSpacing: '0.05em'
               }}
             >
-              {t('nav.menu')}
+              {t('nav.contact')}
             </button>
           </div>
 
@@ -276,17 +277,17 @@ export default function Navbar({ currentPage, navigateTo, cartCount, onCartClick
             {t('nav.home')}
           </button>
           <button 
-            onClick={() => handleNavigate('menu')}
+            onClick={() => handleNavigate('contact')}
             style={{ 
               fontSize: '2rem', 
-              fontWeight: currentPage === 'menu' ? '700' : '400',
+              fontWeight: currentPage === 'contact' ? '700' : '400',
               color: 'var(--color-text)',
               background: 'none',
               border: 'none',
               cursor: 'pointer'
             }}
           >
-            {t('nav.menu')}
+            {t('nav.contact')}
           </button>
 
           {/* Logo in Mobile Menu Background */}

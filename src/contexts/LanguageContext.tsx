@@ -15,6 +15,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Navbar
     'nav.home': 'ACASĂ',
     'nav.menu': 'MENIU',
+    'nav.contact': 'CONTACT',
     'nav.cart': 'COȘ',
     
     // Hero
@@ -84,6 +85,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Navbar
     'nav.home': 'HOME',
     'nav.menu': 'MENU',
+    'nav.contact': 'CONTACT',
     'nav.cart': 'CART',
     
     // Hero

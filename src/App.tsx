@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react'
 import Home from './pages/Home'
 import Menu from './pages/Menu'
 import Navbar from './components/Navbar'
+import Contact from './pages/Contact'
 import Footer from './components/Footer'
 import CartDrawer from './components/CartDrawer'
 import BackToTop from './components/BackToTop'
 
-export type Page = 'home' | 'menu';
+export type Page = 'home' | 'menu' | 'contact';
 
 export interface MenuItem {
   id: number;
@@ -104,6 +105,8 @@ function App() {
             setActiveCategory={setMenuActiveCategory}
             navigateTo={navigateTo}
           />
+        ) : currentPage === 'contact' ? (
+          <Contact navigateTo={navigateTo} />
         ) : null}
       </main>
 
