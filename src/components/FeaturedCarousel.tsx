@@ -4,6 +4,10 @@ import { MENU_DATA } from '../data/menuData';
 import { useLanguage } from '../contexts/LanguageContext';
 import { MenuItem, CartItem, Page } from '../App';
 
+const removeDiacritics = (str: string): string => {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
+
 interface FeaturedCarouselProps {
   addToCart: (item: MenuItem) => void;
   removeFromCart: (id: number) => void;
@@ -25,11 +29,16 @@ export default function FeaturedCarousel({ addToCart, removeFromCart, cart, navi
       const shuffled = [...MENU_DATA].sort(() => 0.5 - Math.random());
       setFilteredItems(shuffled.slice(0, 8));
     } else {
-      const filtered = MENU_DATA.filter(item => 
-        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (item.nameEn && item.nameEn.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        item.category.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      const query = removeDiacritics(searchQuery.toLowerCase());
+      const filtered = MENU_DATA.filter(item => {
+        const nameRo = removeDiacritics(item.name.toLowerCase());
+        const nameEn = item.nameEn ? removeDiacritics(item.nameEn.toLowerCase()) : "";
+        const categoryRo = removeDiacritics(item.category.toLowerCase());
+        
+        return nameRo.includes(query) ||
+               nameEn.includes(query) ||
+               categoryRo.includes(query);
+      });
       setFilteredItems(filtered);
     }
     setCurrentIndex(0);

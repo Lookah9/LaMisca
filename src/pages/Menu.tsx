@@ -27,6 +27,10 @@ const CATEGORIES = [
   "Pește & Fructe de mare", "Pizza", "Desert", "Băuturi", "Meniul Zilei"
 ];
 
+const removeDiacritics = (str: string): string => {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
+
 interface MenuProps {
   cart: CartItem[];
   isCartOpen: boolean;
@@ -138,13 +142,18 @@ export default function Menu({
 
     // Filter by search query
     if (searchQuery.trim() !== "") {
-      const query = searchQuery.toLowerCase();
-      items = items.filter(item => 
-        item.name.toLowerCase().includes(query) || 
-        (item.nameEn && item.nameEn.toLowerCase().includes(query)) ||
-        item.description.toLowerCase().includes(query) ||
-        (item.descriptionEn && item.descriptionEn.toLowerCase().includes(query))
-      );
+      const query = removeDiacritics(searchQuery.toLowerCase());
+      items = items.filter(item => {
+        const nameRo = removeDiacritics(item.name.toLowerCase());
+        const nameEn = item.nameEn ? removeDiacritics(item.nameEn.toLowerCase()) : "";
+        const descRo = removeDiacritics(item.description.toLowerCase());
+        const descEn = item.descriptionEn ? removeDiacritics(item.descriptionEn.toLowerCase()) : "";
+        
+        return nameRo.includes(query) || 
+               nameEn.includes(query) ||
+               descRo.includes(query) ||
+               descEn.includes(query);
+      });
     }
 
     // Filter by category (if not searching or if category is explicitly selected)
