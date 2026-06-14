@@ -304,6 +304,13 @@ export default function CartDrawer({ cart, isCartOpen, setIsCartOpen, addToCart,
                 )}
               </div>
 
+              {/* Legal disclaimer about WhatsApp flow */}
+              <p style={{ fontSize: '0.8rem', opacity: 0.7, marginTop: '15px', textAlign: 'center', lineHeight: '1.4', fontStyle: 'italic' }}>
+                {language === 'ro' 
+                  ? 'Comanda se transmite prin WhatsApp. Nu procesăm plăți online. Comanda este considerată confirmată doar după validarea manuală de către restaurant.' 
+                  : 'The order is transmitted via WhatsApp. We do not process online payments. The order is considered confirmed only after manual validation by the restaurant.'}
+              </p>
+
               {formError && (
                 <p role="alert" style={{ color: '#e11d48', fontSize: '0.85rem', marginTop: '15px', fontWeight: 700, textAlign: 'center' }}>
                   {t('menu.required_fields')}

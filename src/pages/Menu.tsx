@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect } from 'react';
-import { ShoppingBag, Plus, Minus, Send, Phone as WhatsApp, X, Trash2, Search, Utensils, ChevronDown, ArrowUp } from 'lucide-react';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { ShoppingBag, Plus, Minus, Send, Phone as WhatsApp, X, Trash2, Search, Utensils, ChevronDown, ArrowUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { MenuItem, CartItem } from '../App';
 import { MENU_DATA } from '../data/menuData';
@@ -52,6 +52,12 @@ export default function Menu({
 }: MenuProps) {
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
   const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set());
+  const [showFilters, setShowFilters] = useState(false);
+  const [navbarHeight, setNavbarHeight] = useState(80);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(false);
+  const filterListRef = useRef<HTMLDivElement>(null);
+  
   const { t, language } = useLanguage();
 
   const toggleCategory = (category: string) => {
@@ -65,9 +71,6 @@ export default function Menu({
       return newSet;
     });
   };
-
-  const [showFilters, setShowFilters] = useState(false);
-  const [navbarHeight, setNavbarHeight] = useState(80);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -89,6 +92,39 @@ export default function Menu({
     window.addEventListener('resize', updateNavbarHeight);
     return () => window.removeEventListener('resize', updateNavbarHeight);
   }, []);
+
+  const checkScrollLimits = () => {
+    const el = filterListRef.current;
+    if (el) {
+      const canScrollLeft = el.scrollLeft > 5;
+      const canScrollRight = el.scrollLeft < el.scrollWidth - el.clientWidth - 5;
+      setShowLeftArrow(canScrollLeft);
+      setShowRightArrow(canScrollRight);
+    }
+  };
+
+  useEffect(() => {
+    const el = filterListRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkScrollLimits);
+      // Run once on load/visibility toggle
+      checkScrollLimits();
+      
+      // Also run when window resizes
+      window.addEventListener('resize', checkScrollLimits);
+      
+      return () => {
+        el.removeEventListener('scroll', checkScrollLimits);
+        window.removeEventListener('resize', checkScrollLimits);
+      };
+    }
+  }, [showFilters]);
+
+  // Check scroll limits whenever the activeCategory changes (after scroll animation completes)
+  useEffect(() => {
+    const timer = setTimeout(checkScrollLimits, 400);
+    return () => clearTimeout(timer);
+  }, [activeCategory]);
 
   useEffect(() => {
     if (initialSearchQuery !== undefined) {
@@ -196,56 +232,100 @@ export default function Menu({
             />
           </div>
           
-          {/* Category Filter */}
-          <div 
-            style={{ 
-              display: 'flex', 
-              justifyContent: 'center', 
-              gap: '8px', 
-              flexWrap: 'wrap',
-              padding: '0 0 5px 0'
-            }}
-            role="tablist"
-            aria-label="Categorii meniu"
-          >
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat}
-                role="tab"
-                aria-selected={activeCategory === cat}
-                aria-controls={`panel-${cat}`}
+          {/* Category Filter Wrapper with dynamic scroll arrows */}
+          <div style={{ position: 'relative', width: '100%' }}>
+            {/* Left Scroll Arrow */}
+            {showLeftArrow && (
+              <div 
+                className="scroll-arrow-container left"
                 onClick={() => {
-                  if (activeCategory === cat) {
-                    setActiveCategory("Toate");
-                  } else {
-                    setActiveCategory(cat);
+                  if (filterListRef.current) {
+                    filterListRef.current.scrollBy({ left: -200, behavior: 'smooth' });
                   }
-                  setSearchQuery(""); // Clear search when category is selected
-                  // Scroll back to top of menu
-                  const menuSection = document.getElementById('menu-section');
-                  if (menuSection) {
-                    const y = menuSection.getBoundingClientRect().top + window.scrollY - 130;
-                    window.scrollTo({ top: y, behavior: 'smooth' });
-                  } else {
-                    window.scrollTo({ top: window.innerHeight * 0.8, behavior: 'smooth' });
-                  }
-                }}
-                style={{
-                  padding: '6px 16px',
-                  borderRadius: '20px',
-                  border: `1px solid ${activeCategory === cat ? 'var(--color-primary)' : 'rgba(0,0,0,0.1)'}`,
-                  backgroundColor: activeCategory === cat ? 'var(--color-primary)' : 'white',
-                  color: activeCategory === cat ? 'white' : 'var(--color-text)',
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  transition: 'var(--transition)'
                 }}
               >
-                {t(CATEGORY_MAP[cat]).toUpperCase()}
-              </button>
-            ))}
+                <button 
+                  className="scroll-arrow-btn"
+                  aria-label="Defilează la stânga"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+              </div>
+            )}
+
+            {/* Category Filter */}
+            <div 
+              ref={filterListRef}
+              className="category-filter-list hide-scrollbar"
+              role="tablist"
+              aria-label="Categorii meniu"
+            >
+              {CATEGORIES.map(cat => (
+                <button
+                  key={cat}
+                  role="tab"
+                  aria-selected={activeCategory === cat}
+                  aria-controls={`panel-${cat}`}
+                  onClick={(e) => {
+                    if (activeCategory === cat) {
+                      setActiveCategory("Toate");
+                    } else {
+                      setActiveCategory(cat);
+                    }
+                    setSearchQuery(""); // Clear search when category is selected
+
+                    // Smoothly scroll the selected category into the center of the list
+                    e.currentTarget.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'nearest',
+                      inline: 'center'
+                    });
+
+                    // Scroll back to top of menu
+                    const menuSection = document.getElementById('menu-section');
+                    if (menuSection) {
+                      const y = menuSection.getBoundingClientRect().top + window.scrollY - 130;
+                      window.scrollTo({ top: y, behavior: 'smooth' });
+                    } else {
+                      window.scrollTo({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+                    }
+                  }}
+                  style={{
+                    padding: '6px 16px',
+                    borderRadius: '20px',
+                    border: `1px solid ${activeCategory === cat ? 'var(--color-primary)' : 'rgba(0,0,0,0.1)'}`,
+                    backgroundColor: activeCategory === cat ? 'var(--color-primary)' : 'white',
+                    color: activeCategory === cat ? 'white' : 'var(--color-text)',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    transition: 'var(--transition)'
+                  }}
+                >
+                  {t(CATEGORY_MAP[cat]).toUpperCase()}
+                </button>
+              ))}
+            </div>
+
+            {/* Right Scroll Arrow */}
+            {showRightArrow && (
+              <div 
+                className="scroll-arrow-container right"
+                onClick={() => {
+                  if (filterListRef.current) {
+                    filterListRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+                  }
+                }}
+              >
+                <button 
+                  className="scroll-arrow-btn"
+                  aria-label="Defilează la dreapta"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -495,6 +575,86 @@ export default function Menu({
         }
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
+        }
+        .category-filter-list {
+          display: flex;
+          justify-content: flex-start;
+          gap: 8px;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          padding: 8px var(--spacing-md) 12px var(--spacing-md);
+          margin: 0 calc(-1 * var(--spacing-md));
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+        @media (min-width: 768px) {
+          .category-filter-list {
+            justify-content: center;
+            flex-wrap: wrap;
+            overflow-x: visible;
+            padding: 0 0 5px 0;
+            margin: 0;
+          }
+        }
+        /* Premium Arrow Containers with Fading Gradient Overlay */
+        .scroll-arrow-container {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 50px;
+          display: flex;
+          align-items: center;
+          z-index: 10;
+          pointer-events: none;
+          animation: fadeInArrow 0.25s ease;
+        }
+        .scroll-arrow-container.left {
+          left: calc(-1 * var(--spacing-md));
+          background: linear-gradient(to right, var(--color-bg) 60%, rgba(253, 240, 213, 0));
+          justify-content: flex-start;
+          padding-left: 8px;
+        }
+        .scroll-arrow-container.right {
+          right: calc(-1 * var(--spacing-md));
+          background: linear-gradient(to left, var(--color-bg) 60%, rgba(253, 240, 213, 0));
+          justify-content: flex-end;
+          padding-right: 8px;
+        }
+        .scroll-arrow-btn {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          color: var(--color-primary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+          pointer-events: auto;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .scroll-arrow-btn:hover {
+          background: var(--color-primary);
+          color: white;
+          border-color: var(--color-primary);
+          transform: scale(1.08);
+        }
+        .scroll-arrow-btn:active {
+          transform: scale(0.92);
+        }
+        @keyframes fadeInArrow {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        @media (min-width: 768px) {
+          .scroll-arrow-container {
+            display: none !important;
+          }
         }
       `}</style>
     </main>

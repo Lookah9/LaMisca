@@ -77,7 +77,7 @@ export const MENU_DATA: MenuItem[] = [
   { id: 905, name: "Creveți panko (200 gr)", nameEn: "Panko Shrimp (200 gr)", description: "Creveți crocanți în crustă panko.", descriptionEn: "Crispy panko-crusted shrimp.", price: 60, category: "Pește & Fructe de mare" },
 
   // Pizza
-  { id: 1001, name: "Pizza La Mișcă", nameEn: "La Mișcă Pizza", description: "Mozzarella, prosciutto crudo, rucola, roșii seci, buffala.", descriptionEn: "Mozzarella, prosciutto crudo, arugula, sun-dried tomatoes, buffala.", price: 43, category: "Pizza", image: "images/Pizza la Misca_converted.webp" },
+  { id: 1001, name: "Pizza La Mișcă", nameEn: "La Mișcă Pizza", description: "Mozzarella, prosciutto crudo, rucola, roșii seci, buffala.", descriptionEn: "Mozzarella, prosciutto crudo, arugula, sun-dried tomatoes, buffala.", price: 55, category: "Pizza", image: "images/Pizza la Misca_converted.webp" },
   { id: 1002, name: "Pizza Margherita bocconcini", nameEn: "Margherita Bocconcini Pizza", description: "Bocconcini, roșii cherry, busuioc.", descriptionEn: "Bocconcini, cherry tomatoes, basil.", price: 39, category: "Pizza", image: "images/Pizza margherita bocconcini_converted.webp" },
   { id: 1003, name: "Pizza Prosciutto", nameEn: "Prosciutto Pizza", description: "Mozzarella, prosciutto.", descriptionEn: "Mozzarella, prosciutto.", price: 37, category: "Pizza", image: "images/Pizza prosciuto_converted.webp" },
   { id: 1004, name: "Pizza Prosciutto e Funghi", nameEn: "Prosciutto e Funghi Pizza", description: "Mozzarella, prosciutto, ciuperci.", descriptionEn: "Mozzarella, prosciutto, mushrooms.", price: 39, category: "Pizza", image: "images/Prosciuto funghi_converted.webp" },

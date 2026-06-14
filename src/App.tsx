@@ -6,8 +6,12 @@ import Contact from './pages/Contact'
 import Footer from './components/Footer'
 import CartDrawer from './components/CartDrawer'
 import BackToTop from './components/BackToTop'
+import Terms from './pages/Terms'
+import Privacy from './pages/Privacy'
+import Cookies from './pages/Cookies'
+import ConsumerInfo from './pages/ConsumerInfo'
 
-export type Page = 'home' | 'menu' | 'contact';
+export type Page = 'home' | 'menu' | 'contact' | 'terms' | 'privacy' | 'cookies' | 'consumer-info';
 
 export interface MenuItem {
   id: number;
@@ -107,6 +111,14 @@ function App() {
           />
         ) : currentPage === 'contact' ? (
           <Contact navigateTo={navigateTo} />
+        ) : currentPage === 'terms' ? (
+          <Terms navigateTo={navigateTo} />
+        ) : currentPage === 'privacy' ? (
+          <Privacy navigateTo={navigateTo} />
+        ) : currentPage === 'cookies' ? (
+          <Cookies navigateTo={navigateTo} />
+        ) : currentPage === 'consumer-info' ? (
+          <ConsumerInfo navigateTo={navigateTo} />
         ) : null}
       </main>
 
